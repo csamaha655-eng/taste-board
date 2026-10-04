@@ -1,0 +1,292 @@
+/* ==========================================================================
+   taste · web tokens and base components
+   Default theme: Quiet Glass (light + dark, follows the OS; data-theme="light|dark"
+   on <html> forces one). Other themes: add a class on <html>:
+     theme-atmos (light) · theme-nocturne (dark)
+   Solid colors only. The only gradient functions here are masks and dot patterns.
+   Load Google Sans: https://fonts.googleapis.com/css2?family=Google+Sans:wght@400..700&family=Google+Sans+Code:wght@400..600&display=swap
+   ========================================================================== */
+
+:root {
+  /* color */
+  --canvas: #F5F6F8;        /* page ground: cool off-white, never pure white */
+  --surface: #FFFFFF;       /* solid cards */
+  --surface-2: #EEF0F3;     /* recessed wells, segmented tracks */
+  --ink: #0E0F12;           /* headlines, primary text */
+  --ink-2: #686D78;         /* second line of two-tone headlines, body copy */
+  --ink-3: #8A8F99;         /* decoration only: icons, rings, disabled. Never readable text (3:1) */
+  --hairline: #E3E5EA;
+  --accent: #0A84FF;        /* focus, links, selection only */
+  --primary: #0E0F12;       /* the pill CTA */
+  --on-primary: #FFFFFF;
+  --glass-fill: rgb(255 255 255 / .64);
+  --glass-rim: rgb(0 0 0 / .08);
+  --glass-highlight: rgb(255 255 255 / .95);
+  --shade: 0 0 0;           /* rgb triplet for shadows */
+  --dot-a: #4D6B99;         /* stipple hue A (cool) */
+  --dot-b: #C47A3A;         /* stipple hue B (warm) */
+
+  /* type: one family + its mono sibling */
+  --font: "Google Sans", -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: "Google Sans Code", ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+  --w-regular: 400;
+  --w-medium: 500;
+  --w-strong: 560;          /* display and titles: never skinny */
+  --w-bold: 650;
+
+  /* shape */
+  --r-xs: 8px;
+  --r-sm: 12px;
+  --r-md: 20px;
+  --r-lg: 28px;
+  --r-xl: 40px;
+  --r-pill: 9999px;
+
+  /* depth: hairline ring + soft layered shadow + inner top highlight */
+  --shadow-1: 0 0 0 .5px rgb(var(--shade) / .12), 0 1px 2px rgb(var(--shade) / .10);
+  --shadow-2: 0 0 0 .5px rgb(var(--shade) / .07), 0 1px 3px rgb(var(--shade) / .05), 0 10px 28px -12px rgb(var(--shade) / .16), inset 0 .5px 0 var(--glass-highlight);
+  --shadow-3: 0 0 0 .5px rgb(var(--shade) / .12), 0 30px 70px -18px rgb(var(--shade) / .28), 0 10px 24px -12px rgb(var(--shade) / .16);
+
+  /* motion */
+  --ease-out: cubic-bezier(.22, 1, .36, 1);
+  --ease-std: cubic-bezier(.4, 0, .2, 1);
+  --dur-1: 160ms;
+  --dur-2: 320ms;
+  --dur-3: 560ms;
+
+  /* layout */
+  --max: 1200px;
+  --gutter: clamp(16px, 4vw, 40px);
+  --section: clamp(72px, 9vw, 128px);
+
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --canvas: #0C0D10;
+    --surface: #15171B;
+    --surface-2: #101215;
+    --ink: #F4F5F7;
+    --ink-2: #9AA0AB;
+    --ink-3: #737A86;
+    --hairline: #24272D;
+    --accent: #3B9BFF;
+    --primary: #F4F5F7;
+    --on-primary: #0C0D10;
+    --glass-fill: rgb(28 30 35 / .62);
+    --glass-rim: rgb(255 255 255 / .09);
+    --glass-highlight: rgb(255 255 255 / .07);
+    --shade: 0 0 0;
+    --dot-a: #7D9BD0;
+    --dot-b: #D99860;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --canvas: #0C0D10;
+  --surface: #15171B;
+  --surface-2: #101215;
+  --ink: #F4F5F7;
+  --ink-2: #9AA0AB;
+  --ink-3: #737A86;
+  --hairline: #24272D;
+  --accent: #3B9BFF;
+  --primary: #F4F5F7;
+  --on-primary: #0C0D10;
+  --glass-fill: rgb(28 30 35 / .62);
+  --glass-rim: rgb(255 255 255 / .09);
+  --glass-highlight: rgb(255 255 255 / .07);
+  --shade: 0 0 0;
+  --dot-a: #7D9BD0;
+  --dot-b: #D99860;
+  color-scheme: dark;
+}
+
+/* --- Themes (each redefines every color token, so the OS dark block never leaks in) --- */
+
+:root.theme-atmos {            /* frosted sheets in soft light */
+  --canvas: #EEF0F3;
+  --surface: #FFFFFF;
+  --surface-2: #E6E9EE;
+  --ink: #111214;
+  --ink-2: #6B7280;
+  --ink-3: #8E95A1;
+  --hairline: #DDE1E7;
+  --accent: #3E6E91;
+  --primary: #0A0A0B;
+  --on-primary: #FFFFFF;
+  --glass-fill: rgb(255 255 255 / .70);
+  --glass-rim: rgb(255 255 255 / .55);
+  --glass-highlight: rgb(255 255 255 / .95);
+  --shade: 20 30 48;
+  --dot-a: #6F95B2;
+  --dot-b: #9DB0C9;
+  --atmos: #6F95B2;            /* the one hue used as light behind glass */
+  color-scheme: light;
+}
+
+:root.theme-nocturne {         /* dark, flat, one accent */
+  --canvas: #0A0A0A;
+  --surface: #141416;
+  --surface-2: #101012;
+  --ink: #F2F2F0;
+  --ink-2: #9B9BA1;
+  --ink-3: #6E6E75;
+  --hairline: #232326;
+  --accent: #7AA2FF;           /* replace with the product's brand hue */
+  --primary: #F2F2F0;
+  --on-primary: #0A0A0A;
+  --glass-fill: rgb(30 30 34 / .55);
+  --glass-rim: rgb(255 255 255 / .08);
+  --glass-highlight: rgb(255 255 255 / .06);
+  --shade: 0 0 0;
+  --dot-a: #5B6B8C;
+  --dot-b: #8C6A4E;
+  color-scheme: dark;
+}
+
+/* --- Base --- */
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { background: var(--canvas); -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } /* overscroll shows the canvas, never black */
+body {
+  margin: 0;
+  background: var(--canvas);
+  color: var(--ink);
+  font: var(--w-regular) 17px/1.6 var(--font);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+img, svg, video, canvas { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+p { margin: 0; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 8px; }
+::selection { background: var(--primary); color: var(--on-primary); }
+
+/* --- Type --- */
+
+.display, .title, .heading { margin: 0; color: var(--ink); text-wrap: balance; }
+.display { font-size: clamp(44px, 7.2vw, 92px); line-height: 1; letter-spacing: -0.045em; font-weight: var(--w-strong); }
+.title { font-size: clamp(34px, 4.6vw, 60px); line-height: 1.04; letter-spacing: -0.04em; font-weight: var(--w-strong); }
+.heading { font-size: clamp(20px, 2vw, 26px); line-height: 1.25; letter-spacing: -0.02em; font-weight: var(--w-medium); }
+.lede { font-size: clamp(17px, 1.6vw, 20px); line-height: 1.55; letter-spacing: -0.01em; color: var(--ink-2); text-wrap: pretty; max-width: 36em; }
+.muted { color: var(--ink-2); }
+.label { font-size: 12px; line-height: 1.2; font-weight: var(--w-medium); letter-spacing: .14em; text-transform: uppercase; color: var(--ink-2); }
+.mono { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0; }
+.num { font-variant-numeric: tabular-nums; }
+.two-tone > * { display: block; }
+.two-tone > :last-child { color: var(--ink-2); }
+
+/* --- Layout --- */
+
+.wrap { width: 100%; max-width: calc(var(--max) + 2 * var(--gutter)); margin-inline: auto; padding-inline: var(--gutter); }
+.section { padding-block: var(--section); }
+.hairline { border: 0; border-top: 1px solid var(--hairline); margin: 0; }
+
+/* --- Surfaces --- */
+
+.card { background: var(--surface); border-radius: var(--r-lg); box-shadow: var(--shadow-2); }
+.glass {
+  background: var(--glass-fill);
+  -webkit-backdrop-filter: blur(24px) saturate(1.6);
+  backdrop-filter: blur(24px) saturate(1.6);
+  box-shadow: 0 0 0 .5px var(--glass-rim), 0 8px 24px -10px rgb(var(--shade) / .18), inset 0 .5px 0 var(--glass-highlight);
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass, .btn-glass, .segmented { background: var(--surface); }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .glass, .btn-glass, .segmented { background: var(--surface); -webkit-backdrop-filter: none; backdrop-filter: none; }
+}
+
+/* --- Buttons --- */
+
+.btn {
+  --h: 46px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: var(--h); padding: 0 22px;
+  border: 0; border-radius: var(--r-pill);
+  font: var(--w-medium) 15px/1 var(--font); letter-spacing: -0.005em;
+  color: var(--ink); background: transparent;
+  cursor: pointer; white-space: nowrap; -webkit-tap-highlight-color: transparent;
+  transition: transform 90ms var(--ease-out), background-color var(--dur-1) var(--ease-std), opacity var(--dur-1) var(--ease-std);
+}
+.btn:active { transform: scale(.97); }
+.btn-primary { background: var(--primary); color: var(--on-primary); box-shadow: 0 1px 2px rgb(var(--shade) / .18), 0 8px 18px -8px rgb(var(--shade) / .45); }
+.btn-primary:hover { background: color-mix(in srgb, var(--primary) 86%, var(--canvas)); }
+.btn-glass {
+  background: var(--glass-fill);
+  -webkit-backdrop-filter: blur(24px) saturate(1.6);
+  backdrop-filter: blur(24px) saturate(1.6);
+  box-shadow: 0 0 0 .5px var(--glass-rim), 0 6px 18px -10px rgb(var(--shade) / .2), inset 0 .5px 0 var(--glass-highlight);
+}
+.btn-glass:hover { background: color-mix(in srgb, var(--glass-fill) 70%, var(--surface)); }
+.btn-outline { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 60%, transparent); }
+.btn-circle { --h: 44px; width: var(--h); padding: 0; background: var(--surface); box-shadow: var(--shadow-1); }
+.btn-sm { --h: 36px; padding: 0 16px; font-size: 14px; }
+.btn svg { width: 18px; height: 18px; flex: none; }
+.arrow { transition: transform var(--dur-2) var(--ease-out); }
+a:hover .arrow, button:hover .arrow { transform: translateX(4px); }
+
+/* --- Small parts --- */
+
+.chip {
+  display: inline-flex; align-items: center; gap: 8px;
+  min-height: 32px; padding: 0 14px; border-radius: var(--r-pill);
+  background: var(--surface); box-shadow: var(--shadow-1);
+  font-size: 13px; line-height: 1; color: var(--ink-2);
+}
+.segmented {
+  display: inline-flex; gap: 2px; padding: 4px; border-radius: var(--r-pill);
+  background: var(--glass-fill);
+  -webkit-backdrop-filter: blur(20px) saturate(1.5);
+  backdrop-filter: blur(20px) saturate(1.5);
+  box-shadow: 0 0 0 .5px var(--glass-rim), 0 6px 18px -10px rgb(var(--shade) / .18);
+}
+.segmented button {
+  min-height: 38px; padding: 0 18px; border: 0; border-radius: var(--r-pill);
+  background: transparent; color: var(--ink-2); cursor: pointer;
+  font: var(--w-medium) 14px/1 var(--font);
+  transition: background-color var(--dur-2) var(--ease-out), color var(--dur-1) var(--ease-std), box-shadow var(--dur-2) var(--ease-out);
+}
+.segmented button[aria-pressed="true"] { background: var(--surface); color: var(--ink); box-shadow: var(--shadow-1); }
+
+/* Horizontal rail: snap, scrollbar hidden on rails only */
+.rail { display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; scrollbar-width: none; }
+.rail::-webkit-scrollbar { display: none; }
+.rail > * { flex: none; scroll-snap-align: center; }
+
+/* Dot-matrix text: a hard-edged dot pattern, not a color blend */
+.dot-matrix {
+  color: transparent;
+  background-image: radial-gradient(circle at center, var(--ink-3) 1.15px, transparent 1.5px);
+  background-size: 6px 6px;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* Floating nav: three separate pieces over a feathered blur band */
+.feather {
+  position: fixed; inset: 0 0 auto; z-index: 49; pointer-events: none;
+  height: calc(env(safe-area-inset-top, 0px) + 92px);
+  background: color-mix(in srgb, var(--canvas) 55%, transparent);
+  -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+  -webkit-mask-image: linear-gradient(#000 40%, transparent); mask-image: linear-gradient(#000 40%, transparent);
+}
+.feather.clear { background: transparent; } /* over full-bleed photos: blur only, no pale band */
+
+/* Scroll reveal: starts visible, CSS-only, skipped without support or with Reduce Motion */
+@keyframes taste-reveal { from { opacity: .4; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal { animation: taste-reveal linear both; animation-timeline: view(); animation-range: entry 0% entry 70%; }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}

@@ -1,0 +1,894 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Taste Style Board</title>
+<meta name="theme-color" content="#F5F6F8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0C0D10" media="(prefers-color-scheme: dark)">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400..700&family=Google+Sans+Code:wght@400..600&display=swap">
+<link rel="stylesheet" href="tokens.css">
+<style>
+/* Layout: an editorial board. Floating three-piece nav; a centered hero over a stippled field with two
+   Atmos Glass phones; left-heading / right-content sections divided by hairlines; a full-bleed sticky
+   parallax scene; a dot-matrix wordmark closing the page. Base tokens come from tokens.css (Quiet Glass). */
+:root {
+  /* device screens and the parallax scene are imagery: their own palette */
+  --dev-ink: #111214;
+  --dev-ink-2: #5E6470;
+  --dev-ink-3: #8E95A1;
+  --dev-white: #FFFFFF;
+  --dev-black: #0A0A0B;
+  --device: #0B0C0E;
+  --device-rim: #2A2C31;
+  --fog: #EEF0F3;
+  --atmos-day: #6F95B2;
+  --atmos-night-1: #070B16;
+  --atmos-night-2: #4566D8;
+  --night-date: #9DB0FF;
+  --scene-sky: #DDE4EB;
+  --scene-sun: #F3E8D6;
+  --scene-far: #BAC6D2;
+  --scene-mid: #93A5B6;
+  --scene-near: #657989;
+  --scene-front: #34414E;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --scene-sky: #10141B; --scene-sun: #E7E2D6; --scene-far: #1A212B; --scene-mid: #222B37; --scene-near: #2B3644; --scene-front: #0B0E13;
+  }
+}
+:root[data-theme="dark"] {
+  --scene-sky: #10141B; --scene-sun: #E7E2D6; --scene-far: #1A212B; --scene-mid: #222B37; --scene-near: #2B3644; --scene-front: #0B0E13;
+}
+
+body { overflow-x: clip; }
+section[id] { scroll-margin-top: 96px; }
+code { font-family: var(--font-mono); font-size: .9em; }
+
+/* ---------- nav ---------- */
+.nav { position: fixed; top: calc(env(safe-area-inset-top, 0px) + 14px); left: 0; right: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; padding-inline: var(--gutter); pointer-events: none; }
+.nav > * { pointer-events: auto; }
+.logo { width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; background: var(--surface); box-shadow: var(--shadow-2); color: var(--ink); }
+.logo svg { width: 24px; height: 24px; }
+.nav-pill { position: absolute; left: 50%; transform: translateX(-50%); display: flex; gap: 2px; padding: 5px; border-radius: var(--r-pill); }
+.nav-pill a { padding: 10px 15px; border-radius: var(--r-pill); font-size: 14px; font-weight: 500; line-height: 1; color: var(--ink-2); transition: color var(--dur-1) var(--ease-std), background-color var(--dur-1) var(--ease-std); }
+.nav-pill a:hover { color: var(--ink); background: color-mix(in srgb, var(--ink) 6%, transparent); }
+.menu-btn { display: none; }
+.menu-panel { position: fixed; z-index: 51; top: calc(env(safe-area-inset-top, 0px) + 74px); left: 50%; transform: translateX(-50%); width: min(320px, calc(100vw - 32px)); padding: 8px; border-radius: 24px; display: grid; }
+.menu-panel a { padding: 13px 16px; border-radius: 16px; font-weight: 500; color: var(--ink); }
+.menu-panel a:hover { background: color-mix(in srgb, var(--ink) 6%, transparent); }
+@media (max-width: 920px) {
+  .nav-pill a { display: none; }
+  .menu-btn { display: inline-flex; }
+}
+@media (max-width: 420px) {
+  .nav .btn-primary { --h: 40px; padding: 0 16px; font-size: 14px; }
+  .logo { width: 44px; height: 44px; }
+}
+
+/* ---------- hero ---------- */
+.hero { position: relative; isolation: isolate; padding-top: calc(env(safe-area-inset-top, 0px) + clamp(128px, 16vw, 176px)); padding-bottom: clamp(8px, 2vw, 24px); }
+.hero-field { position: absolute; left: 0; right: 0; top: 0; height: min(1000px, 92%); z-index: -1; pointer-events: none; }
+.hero-field canvas { position: absolute; inset: 0; }
+.hero-copy { display: grid; justify-items: center; text-align: center; gap: 22px; }
+.hero-copy .lede { margin-top: 4px; }
+.hero-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 8px; }
+.hero-meta { color: var(--ink-2); text-wrap: balance; }
+.chip-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+
+.palette-switch { display: grid; justify-items: center; gap: 10px; margin-top: clamp(44px, 6vw, 72px); }
+.palette-switch .mono { color: var(--ink-2); font-size: 12px; }
+.devices[data-palette="graphite"] { --atmos-day: #8C8F95; --atmos-night-1: #0B0B0C; --atmos-night-2: #4A4C52; --night-date: #B9BBC0; }
+.atmos-light i, .avatar { transition: background-color .6s var(--ease-out); }
+.s-title span + span { transition: color .6s var(--ease-out); }
+.devices { margin-top: 24px; justify-content: center; gap: clamp(20px, 3vw, 40px); padding-block: 12px 28px; }
+.device { margin: 0; display: grid; justify-items: center; gap: 16px; }
+.device figcaption { color: var(--ink-2); }
+@media (max-width: 720px) {
+  .devices { justify-content: flex-start; padding-inline: max(var(--gutter), calc(50% - 150px)); scroll-padding-inline: max(var(--gutter), calc(50% - 150px)); }
+}
+
+/* ---------- phone (Atmos Glass) ---------- */
+.phone { width: 300px; height: 650px; border-radius: 54px; padding: 9px; background: var(--device); box-shadow: var(--shadow-3), inset 0 0 0 1.5px var(--device-rim); }
+.screen { position: relative; height: 100%; border-radius: 45px; overflow: hidden; isolation: isolate; background: var(--fog); color: var(--dev-ink); font-size: 13px; line-height: 1.35; }
+.atmos-light { position: absolute; inset: 0; z-index: -1; overflow: hidden; }
+.atmos-light i { position: absolute; border-radius: 50%; filter: blur(44px); }
+.day .atmos-light i:nth-child(1) { width: 150%; height: 62%; left: -34%; top: -20%; background: var(--atmos-day); }
+.day .atmos-light i:nth-child(2) { width: 90%; height: 38%; left: -30%; top: 26%; background: var(--atmos-day); opacity: .55; }
+.night .atmos-light i:nth-child(1) { width: 160%; height: 54%; left: -30%; top: -18%; background: var(--atmos-night-1); }
+.night .atmos-light i:nth-child(2) { width: 130%; height: 34%; left: -14%; top: 27%; background: var(--atmos-night-2); opacity: .5; }
+.island { position: absolute; top: 11px; left: 50%; transform: translateX(-50%); width: 92px; height: 27px; border-radius: 20px; background: var(--dev-black); }
+.status { display: flex; justify-content: space-between; align-items: center; height: 46px; padding: 6px 28px 0 30px; font-size: 14px; font-weight: 600; color: var(--dev-white); }
+.status svg { height: 11px; width: auto; }
+.status-icons { display: flex; gap: 5px; align-items: center; }
+.s-head { display: flex; justify-content: space-between; align-items: flex-start; padding: 16px 22px 0 24px; color: var(--dev-white); }
+.s-title { margin: 0; font-size: 27px; line-height: 1.12; letter-spacing: -0.03em; font-weight: 560; }
+.s-title span { display: block; }
+.day .s-title span + span { color: rgb(255 255 255 / .66); }
+.night .s-title span + span { color: var(--night-date); }
+.s-circle { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; color: var(--dev-white); background: rgb(255 255 255 / .2); -webkit-backdrop-filter: blur(16px) saturate(1.4); backdrop-filter: blur(16px) saturate(1.4); box-shadow: inset 0 0 0 .5px rgb(255 255 255 / .4), inset 0 .5px 0 rgb(255 255 255 / .55); }
+.s-circle svg { width: 18px; height: 18px; }
+.s-ring { position: relative; width: 66px; height: 66px; display: grid; place-items: center; text-align: center; color: var(--dev-white); }
+.s-ring svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.s-ring b { display: block; font-size: 15px; font-weight: 600; letter-spacing: -0.02em; line-height: 1; }
+.s-ring small { display: block; font-size: 8.5px; color: rgb(255 255 255 / .6); margin-top: 2px; }
+
+.stack { position: relative; margin: 13px 12px 0; }
+.sheet { border-radius: 30px; -webkit-backdrop-filter: blur(22px) saturate(1.5); backdrop-filter: blur(22px) saturate(1.5); box-shadow: inset 0 0 0 .5px rgb(255 255 255 / .55), inset 0 1px 0 rgb(255 255 255 / .6), 0 14px 30px -16px rgb(20 30 48 / .4); }
+.sheet-back { display: flex; align-items: center; gap: 10px; padding: 13px 18px 38px; background: rgb(255 255 255 / .38); font-weight: 500; }
+.sheet-back b { margin-left: auto; font-weight: 600; font-variant-numeric: tabular-nums; }
+.sheet-back svg { width: 16px; height: 16px; }
+.sheet-front { position: relative; z-index: 2; margin-top: -26px; display: flex; flex-direction: column; min-height: 196px; padding: 16px 18px 15px; background: rgb(255 255 255 / .82); }
+.sheet-under { position: relative; z-index: 1; margin-top: -24px; padding: 36px 18px 13px; background: rgb(255 255 255 / .52); font-size: 12.5px; color: var(--dev-ink-2); }
+.sheet-under b { margin-left: 6px; color: var(--dev-ink); font-weight: 550; }
+.sf-top { display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; color: var(--dev-ink-2); }
+.avatar { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: var(--atmos-day); color: var(--dev-white); font-size: 11px; font-weight: 600; box-shadow: 0 0 0 2px var(--dev-white); }
+.night .avatar { background: var(--atmos-night-2); }
+.sheet-front h4 { margin: 16px 0 8px; font-size: 23px; line-height: 1.1; letter-spacing: -0.03em; font-weight: 560; color: var(--dev-ink); }
+.sheet-front p { font-size: 12.5px; line-height: 1.45; color: var(--dev-ink-2); }
+.sf-foot { display: flex; justify-content: space-between; align-items: center; margin-top: auto; padding-top: 14px; }
+.pill-ink { display: inline-flex; align-items: center; gap: 8px; height: 38px; padding: 0 16px 0 6px; border-radius: 999px; background: var(--dev-black); color: var(--dev-white); font-size: 13px; font-weight: 560; }
+.pill-ink .play { width: 27px; height: 27px; border-radius: 50%; display: grid; place-items: center; background: var(--dev-white); }
+.pill-ink .play svg { width: 10px; height: 10px; margin-left: 1px; }
+.night .pill-ink { width: 100%; justify-content: center; padding: 0 16px; gap: 10px; }
+.pill-ink .quiet { color: rgb(255 255 255 / .55); font-weight: 500; }
+.dur { display: flex; align-items: center; gap: 5px; font-size: 12.5px; color: var(--dev-ink-3); font-variant-numeric: tabular-nums; }
+.dur svg { width: 13px; height: 13px; }
+
+.week { margin: 10px 12px 0; padding: 12px 8px 8px; border-radius: 28px; background: rgb(255 255 255 / .42); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); box-shadow: inset 0 0 0 .5px rgb(255 255 255 / .65); }
+.week-head { display: flex; justify-content: space-between; padding: 0 10px 6px; font-size: 12.5px; color: var(--dev-ink-2); }
+.week-head b { color: var(--dev-ink); font-weight: 500; font-variant-numeric: tabular-nums; }
+.days { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(7, 1fr); }
+.days li { display: grid; justify-items: center; gap: 3px; padding: 7px 0 6px; border-radius: 20px; font-size: 10.5px; color: var(--dev-ink-3); }
+.days b { font-size: 15px; font-weight: 500; color: var(--dev-ink); font-variant-numeric: tabular-nums; }
+.days i { width: 4px; height: 4px; border-radius: 50%; background: var(--dev-ink-3); }
+.days i.no { visibility: hidden; }
+.days li.on { background: var(--dev-white); box-shadow: 0 6px 16px -8px rgb(20 30 48 / .4), inset 0 0 0 .5px rgb(0 0 0 / .05); }
+.s-prompt { position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%); display: flex; align-items: center; gap: 10px; height: 40px; padding: 0 6px 0 16px; border-radius: 999px; white-space: nowrap; font-size: 12.5px; color: var(--dev-ink-3); background: rgb(255 255 255 / .74); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); box-shadow: 0 0 0 .5px rgb(0 0 0 / .06), 0 10px 24px -10px rgb(20 30 48 / .4), inset 0 .5px 0 var(--dev-white); }
+.s-prompt .send { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: var(--dev-black); }
+.s-prompt .send svg { width: 12px; height: 12px; }
+.home { position: absolute; bottom: 9px; left: 50%; transform: translateX(-50%); width: 112px; height: 4px; border-radius: 4px; background: var(--dev-ink); opacity: .85; }
+
+/* ---------- sections ---------- */
+.sec-head { display: grid; gap: 16px; max-width: 760px; margin-bottom: clamp(36px, 5vw, 64px); }
+.split { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(32px, 6vw, 96px); align-items: start; }
+.split-head { position: sticky; top: 120px; display: grid; gap: 18px; }
+.split-head .muted { max-width: 30em; }
+@media (max-width: 860px) {
+  .split { grid-template-columns: minmax(0, 1fr); }
+  .split-head { position: static; }
+}
+
+.rows { list-style: none; margin: 0; padding: 0; }
+.rows li { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 24px; padding: 26px 0; border-top: 1px solid var(--hairline); }
+.rows li:last-child { border-bottom: 1px solid var(--hairline); }
+.rows h3 { margin: 0; font-size: clamp(20px, 2vw, 24px); line-height: 1.2; letter-spacing: -0.025em; font-weight: 560; }
+.rows p { font-size: 15.5px; line-height: 1.55; color: var(--ink-2); }
+@media (max-width: 560px) { .rows li { grid-template-columns: minmax(0, 1fr); gap: 8px; padding: 22px 0; } }
+
+/* ---------- themes ---------- */
+.themes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+@media (max-width: 720px) { .themes { grid-template-columns: minmax(0, 1fr); } }
+.theme { display: flex; flex-direction: column; background: var(--surface); border-radius: var(--r-lg); box-shadow: var(--shadow-2); overflow: hidden; }
+.tp { position: relative; isolation: isolate; overflow: hidden; height: clamp(214px, 22vw, 270px); margin: 8px 8px 0; border-radius: 21px; }
+.theme-body { display: grid; gap: 10px; padding: 18px 22px 22px; }
+.theme-body h3 { margin: 0; font-size: 21px; letter-spacing: -0.025em; font-weight: 560; }
+.theme-body p { font-size: 14.5px; line-height: 1.5; color: var(--ink-2); }
+.sw { list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 14px; }
+.sw li { display: inline-flex; align-items: center; gap: 7px; font: 12px/1 var(--font-mono); color: var(--ink-2); }
+.sw li::before { content: ""; width: 14px; height: 14px; border-radius: 50%; background: var(--c); box-shadow: 0 0 0 1px var(--hairline); }
+
+/* previews: each shows its own theme, so its colors are fixed in both page themes */
+.tp-quiet { background: #F5F6F8; --dot-a: #4D6B99; --dot-b: #C47A3A; }
+.tp-quiet canvas { position: absolute; inset: 0; z-index: -1; }
+.mini-nav { position: absolute; top: 14px; left: 14px; right: 14px; display: flex; justify-content: space-between; align-items: center; }
+.mini-nav i { display: block; border-radius: 99px; }
+.mini-nav i:nth-child(1) { width: 22px; height: 22px; background: #FFFFFF; box-shadow: 0 0 0 .5px rgb(0 0 0 / .1), 0 2px 6px -2px rgb(0 0 0 / .15); }
+.mini-nav i:nth-child(2) { width: 64px; height: 22px; background: rgb(255 255 255 / .8); box-shadow: 0 0 0 .5px rgb(0 0 0 / .08); }
+.mini-nav i:nth-child(3) { width: 48px; height: 20px; background: #0E0F12; }
+.mini-hero { position: absolute; inset: 52px 16px 16px; display: grid; justify-items: center; align-content: center; gap: 12px; text-align: center; }
+.mini-hero b { display: block; font-size: 23px; line-height: 1.05; letter-spacing: -0.04em; font-weight: 560; color: #0E0F12; }
+.mini-hero b span { display: block; color: #686D78; }
+.mini-hero em { font-style: normal; display: inline-flex; align-items: center; height: 26px; padding: 0 12px; border-radius: 99px; background: #0E0F12; color: #FFFFFF; font-size: 11px; font-weight: 500; }
+
+.tp-atmos { background: #EEF0F3; }
+.tp-atmos .glow { position: absolute; z-index: -1; width: 130%; height: 80%; left: -20%; top: -34%; border-radius: 50%; background: #6F95B2; filter: blur(36px); }
+.tp-atmos .mini-sheet { position: absolute; left: 18px; right: 18px; top: 40px; padding: 14px 16px; border-radius: 22px; background: rgb(255 255 255 / .8); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); box-shadow: inset 0 0 0 .5px rgb(255 255 255 / .6), 0 12px 26px -14px rgb(20 30 48 / .45); color: #111214; }
+.tp-atmos .mini-sheet small { display: block; font-size: 11px; color: #6B7280; }
+.tp-atmos .mini-sheet b { display: block; margin: 8px 0 12px; font-size: 18px; letter-spacing: -0.03em; font-weight: 560; }
+.tp-atmos .mini-sheet em { font-style: normal; display: inline-flex; align-items: center; height: 26px; padding: 0 12px; border-radius: 99px; background: #0A0A0B; color: #FFFFFF; font-size: 11px; font-weight: 500; }
+.tp-atmos .mini-prompt { position: absolute; left: 50%; bottom: 20px; transform: translateX(-50%); display: flex; align-items: center; gap: 8px; height: 34px; padding: 0 5px 0 14px; border-radius: 99px; white-space: nowrap; font-size: 11.5px; color: #5E6470; background: rgb(255 255 255 / .74); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); box-shadow: 0 0 0 .5px rgb(0 0 0 / .06), 0 10px 22px -10px rgb(20 30 48 / .4), inset 0 .5px 0 #FFFFFF; }
+.tp-atmos .mini-prompt i { width: 24px; height: 24px; border-radius: 50%; background: #0A0A0B; display: grid; place-items: center; }
+.tp-atmos .mini-prompt svg { width: 10px; height: 10px; }
+.tp-atmos .peek { position: absolute; left: 30px; right: 30px; top: 26px; height: 40px; border-radius: 20px; background: rgb(255 255 255 / .4); }
+
+.tp-journey { background: #DDE4EB; }
+.tp-journey svg { position: absolute; left: 0; bottom: 0; width: 100%; height: 100%; }
+.tp-journey .cap { position: absolute; left: 14px; top: 14px; padding: 10px 14px; border-radius: 16px; background: rgb(255 255 255 / .62); -webkit-backdrop-filter: blur(14px) saturate(1.4); backdrop-filter: blur(14px) saturate(1.4); box-shadow: 0 0 0 .5px rgb(255 255 255 / .6), 0 8px 18px -10px rgb(0 0 0 / .25); color: #0E0F12; }
+.tp-journey .cap b { display: block; font-size: 13px; font-weight: 560; letter-spacing: -0.01em; }
+.tp-journey .cap small { display: block; font: 10.5px/1.4 var(--font-mono); color: #4C525C; margin-top: 2px; }
+
+
+.tp-nocturne { background: #0A0A0A; color: #F2F2F0; }
+.tp-nocturne .moon { position: absolute; right: 34px; top: 30px; width: 26px; height: 26px; border-radius: 50%; background: #E7E2D6; }
+.tp-nocturne .nc-copy { position: absolute; left: 20px; top: 26px; }
+.tp-nocturne .nc-copy b { display: block; font-size: 34px; line-height: 1; letter-spacing: -0.04em; font-weight: 600; font-variant-numeric: tabular-nums; }
+.tp-nocturne .nc-copy small { display: block; margin-top: 6px; font-size: 12px; color: #9B9BA1; }
+.tp-nocturne .nc-copy em { font-style: normal; display: inline-flex; align-items: center; gap: 6px; height: 28px; margin-top: 14px; padding: 0 14px; border-radius: 99px; box-shadow: inset 0 0 0 1px rgb(242 242 240 / .7); font-size: 11.5px; font-weight: 500; }
+.tp-nocturne .nc-copy em i { width: 6px; height: 6px; border-radius: 50%; background: #7AA2FF; }
+.tp-nocturne svg { position: absolute; left: 0; bottom: 0; width: 100%; height: 46%; }
+
+
+/* ---------- type ---------- */
+.type-grid { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 20px; align-items: stretch; }
+@media (max-width: 900px) { .type-grid { grid-template-columns: minmax(0, 1fr); } }
+.aa { display: grid; align-content: space-between; gap: 28px; padding: 28px; }
+.aa-glyph { font-size: clamp(120px, 14vw, 180px); line-height: .85; letter-spacing: -0.06em; font-weight: 560; }
+.aa .heading { margin-bottom: 6px; }
+.aa-note { padding-top: 18px; border-top: 1px solid var(--hairline); font-size: 14.5px; color: var(--ink-2); }
+.scale { list-style: none; margin: 0; padding: 4px 28px; }
+.scale li { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 20px; align-items: baseline; padding: 20px 0; border-top: 1px solid var(--hairline); }
+.scale li:first-child { border-top: 0; }
+.scale .mono { color: var(--ink-2); font-size: 12px; }
+.scale .t-display { font-size: clamp(40px, 5vw, 64px); line-height: 1; letter-spacing: -0.045em; font-weight: 560; }
+.scale .t-title { font-size: clamp(28px, 3.2vw, 40px); line-height: 1.05; letter-spacing: -0.04em; font-weight: 560; }
+.scale .t-heading { font-size: 24px; letter-spacing: -0.02em; font-weight: 500; }
+.scale .t-body { font-size: 17px; color: var(--ink-2); }
+.scale .t-skinny { font-family: system-ui, -apple-system, sans-serif; font-size: 26px; font-weight: 200; color: var(--ink-2); text-decoration: line-through; text-decoration-thickness: 1.5px; }
+@media (max-width: 560px) {
+  .scale { padding: 4px 20px; }
+  .scale li { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+}
+
+/* ---------- components ---------- */
+.board { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--hairline); border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--shadow-2); }
+@media (max-width: 1000px) { .board { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .board { grid-template-columns: minmax(0, 1fr); } }
+.cell { display: grid; grid-template-rows: auto 1fr; gap: 24px; min-height: 240px; padding: 26px 28px 30px; background: var(--surface); min-width: 0; }
+.cell > :last-child { align-self: center; }
+.cell > .mono { color: var(--ink-2); font-size: 12px; }
+.row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.stack-v { display: grid; gap: 14px; justify-items: start; }
+
+.price { display: grid; gap: 14px; }
+.price-top { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.price-top b { font-size: 15px; font-weight: 560; }
+.price-amount { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.price-amount strong { font-size: 40px; line-height: 1; letter-spacing: -0.04em; font-weight: 560; font-variant-numeric: tabular-nums; }
+.price-amount span { color: var(--ink-2); font-size: 14px; }
+.price-amount s { color: var(--ink-2); font-size: 14px; font-variant-numeric: tabular-nums; }
+.price small { color: var(--ink-2); font-size: 13.5px; }
+.price .btn { width: 100%; }
+.badge-save { font-size: 12px; font-weight: 500; color: var(--accent); }
+
+.link-card { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 22px 22px 22px 24px; border-radius: 22px; background: var(--canvas); box-shadow: inset 0 0 0 .5px var(--hairline); width: 100%; }
+.link-card small { display: block; font-size: 13.5px; color: var(--ink-2); }
+.link-card b { display: block; margin-top: 3px; font-size: 18px; letter-spacing: -0.02em; font-weight: 560; }
+
+.prompt { display: flex; align-items: center; gap: 10px; width: 100%; height: 52px; padding: 0 7px 0 20px; border-radius: var(--r-pill); }
+.prompt input { flex: 1; min-width: 0; border: 0; background: transparent; font: 400 15px/1 var(--font); color: var(--ink); outline: none; }
+.prompt input::placeholder { color: var(--ink-2); }
+.prompt button { flex: none; width: 38px; height: 38px; border: 0; border-radius: 50%; display: grid; place-items: center; background: var(--primary); color: var(--on-primary); cursor: pointer; transition: transform 90ms var(--ease-out); }
+.prompt button:active { transform: scale(.94); }
+.prompt button svg { width: 16px; height: 16px; }
+.prompt-note { font-size: 13px; color: var(--ink-2); min-height: 1.4em; }
+.well { width: 100%; padding: 18px; border-radius: 22px; background: var(--canvas); }
+
+.faq { width: 100%; }
+.faq details { border-top: 1px solid var(--hairline); }
+.faq details:last-child { border-bottom: 1px solid var(--hairline); }
+.faq summary { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 15px 0; cursor: pointer; list-style: none; font-size: 15px; font-weight: 500; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary i { flex: none; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: var(--surface); box-shadow: var(--shadow-1); transition: transform var(--dur-2) var(--ease-out); }
+.faq summary i svg { width: 12px; height: 12px; }
+.faq details[open] summary i { transform: rotate(45deg); }
+.faq details p { padding: 0 40px 16px 0; font-size: 14.5px; color: var(--ink-2); }
+
+/* ---------- motion: parallax journey ---------- */
+.motion { padding-top: var(--section); }
+.journey { position: relative; height: 210vh; view-timeline: --journey block; }
+.journey-stage { position: sticky; top: 0; height: 100vh; min-height: 560px; overflow: hidden; background: var(--scene-sky); }
+.layer { position: absolute; left: 0; right: 0; bottom: 0; }
+.layer svg { display: block; width: 100%; height: auto; aspect-ratio: 2.5 / 1; min-height: 320px; }
+.layer::after { content: ""; position: absolute; left: 0; right: 0; top: 99.5%; height: 60vh; background: var(--fill); }
+.layer path, .layer circle { fill: var(--fill); }
+.l-sun { --fill: var(--scene-sun); }
+.l-far { --fill: var(--scene-far); }
+.l-mid { --fill: var(--scene-mid); }
+.l-near { --fill: var(--scene-near); }
+.l-front { --fill: var(--scene-front); }
+.l-sun::after { display: none; }
+.journey-card { position: absolute; left: var(--gutter); top: clamp(96px, 16vh, 160px); width: min(400px, calc(100% - 2 * var(--gutter))); display: grid; gap: 12px; padding: 24px 26px; border-radius: 26px; }
+.journey-card h3 { margin: 0; font-size: clamp(22px, 2.4vw, 28px); line-height: 1.15; letter-spacing: -0.03em; font-weight: 560; }
+.journey-card p { font-size: 15px; color: var(--ink-2); }
+.journey-card .mono { color: var(--ink-2); font-size: 12px; }
+@keyframes drift { from { transform: translate3d(0, var(--y0), 0); } to { transform: translate3d(0, var(--y1), 0); } }
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .layer, .journey-card { animation: drift linear both; animation-timeline: --journey; animation-range: contain 0% contain 100%; }
+    .l-sun { --y0: -14%; --y1: 26%; }
+    .l-far { --y0: 3%; --y1: -3%; }
+    .l-mid { --y0: 9%; --y1: -9%; }
+    .l-near { --y0: 16%; --y1: -16%; }
+    .l-front { --y0: 26%; --y1: -24%; }
+    .journey-card { --y0: 28px; --y1: -28px; }
+  }
+}
+
+.specs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(20px, 3vw, 40px); padding-block: clamp(48px, 6vw, 80px) 0; }
+@media (max-width: 760px) { .specs { grid-template-columns: minmax(0, 1fr); } }
+.spec { display: grid; gap: 10px; align-content: start; padding-top: 20px; border-top: 1px solid var(--hairline); }
+.spec h3 { margin: 0; font-size: 18px; font-weight: 560; letter-spacing: -0.02em; }
+.spec p { font-size: 15px; color: var(--ink-2); }
+.ease-demo { position: relative; height: 36px; border-radius: var(--r-pill); background: var(--surface-2); box-shadow: inset 0 0 0 .5px var(--hairline); cursor: pointer; }
+.ease-demo span { position: absolute; top: 4px; left: 4px; width: 28px; height: 28px; border-radius: 50%; background: var(--primary); transition: left var(--dur-3) var(--ease-out); }
+.ease-demo:hover span, .ease-demo:focus-visible span { left: calc(100% - 32px); }
+
+/* ---------- never ---------- */
+.never { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 32px; }
+@media (max-width: 560px) { .never { grid-template-columns: minmax(0, 1fr); } }
+.never li { display: flex; align-items: center; gap: 14px; padding: 16px 0; border-top: 1px solid var(--hairline); font-size: 16px; font-weight: 500; }
+.never li i { flex: none; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; box-shadow: inset 0 0 0 1px var(--hairline); color: var(--ink-3); }
+.never li i svg { width: 10px; height: 10px; }
+
+/* ---------- how it works ---------- */
+.steps { list-style: none; margin: 0 0 28px; padding: 0; }
+.steps li { display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 12px; padding: 22px 0; border-top: 1px solid var(--hairline); }
+.steps li:last-child { border-bottom: 1px solid var(--hairline); }
+.steps .mono { color: var(--ink-2); padding-top: 4px; }
+.steps h3 { margin: 0 0 4px; font-size: 19px; font-weight: 560; letter-spacing: -0.02em; }
+.steps p { font-size: 15px; color: var(--ink-2); }
+.use-card { display: grid; gap: 14px; padding: 24px; }
+.path { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 10px 10px 10px 18px; border-radius: var(--r-pill); background: var(--canvas); box-shadow: inset 0 0 0 .5px var(--hairline); }
+.path code { font-size: 14px; overflow-wrap: anywhere; }
+.use-card p { font-size: 15px; color: var(--ink-2); }
+
+/* ---------- footer ---------- */
+.footer { overflow: hidden; padding-top: clamp(56px, 7vw, 96px); }
+.foot-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; padding-top: 28px; border-top: 1px solid var(--hairline); font-size: 14px; color: var(--ink-2); }
+.foot-copy { display: grid; gap: 6px; }
+.foot-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.foot-note { margin-top: 16px; color: var(--ink-2); font-size: 12px; }
+.foot-row .mono { color: var(--ink-2); font-size: 12px; }
+@media (max-width: 600px) { .wordmark.dot-matrix { background-image: radial-gradient(circle at center, var(--ink-3) .8px, transparent 1.1px); background-size: 4px 4px; } }
+.wordmark { margin: clamp(28px, 4vw, 48px) 0 -0.2em; text-align: center; font-size: clamp(140px, 31vw, 440px); line-height: .8; letter-spacing: -0.065em; font-weight: 650; user-select: none; }
+</style>
+</head>
+<body>
+
+<div class="feather" aria-hidden="true"></div>
+<header class="nav">
+  <a class="logo" href="#top" aria-label="Taste, back to top">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="8" width="12" height="8" rx="4" fill="currentColor"/><circle cx="18.5" cy="12" r="4" fill="currentColor"/></svg>
+  </a>
+  <nav class="nav-pill glass" aria-label="Sections">
+    <a href="#principles">Principles</a>
+    <a href="#themes">Themes</a>
+    <a href="#type">Type</a>
+    <a href="#components">Components</a>
+    <a href="#motion">Motion</a>
+    <button class="btn btn-sm menu-btn" type="button" aria-expanded="false" aria-controls="menu">
+      <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 7h12M4 13h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      Menu
+    </button>
+  </nav>
+  <a class="btn btn-primary" href="#use">How to use</a>
+</header>
+<nav class="menu-panel glass" id="menu" aria-label="Sections" hidden>
+  <a href="#principles">Principles</a>
+  <a href="#themes">Themes</a>
+  <a href="#type">Type</a>
+  <a href="#components">Components</a>
+  <a href="#motion">Motion</a>
+  <a href="#never">Never</a>
+</nav>
+
+<main>
+  <!-- HERO -->
+  <section class="hero" id="top">
+    <div class="hero-field" aria-hidden="true"><canvas class="stipple"></canvas></div>
+    <div class="wrap hero-copy">
+      <p class="chip"><span class="chip-dot" aria-hidden="true"></span>Personal design language <span class="mono">v1</span></p>
+      <h1 class="display two-tone"><span>Quiet glass.</span><span>Built to feel expensive.</span></h1>
+      <p class="lede">The default look for every app and site you build: calm neutrals, real content, native Liquid Glass on iOS and solid color everywhere. Never a gradient.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#themes">See the themes</a>
+        <a class="btn btn-glass" href="#principles">Read the rules</a>
+      </div>
+      <p class="mono hero-meta">SwiftUI · iOS 26+ · Static HTML · Vite + React</p>
+    </div>
+
+    <div class="palette-switch">
+      <div class="segmented" role="group" aria-label="Phone palette">
+        <button type="button" aria-pressed="true" data-palette="blue">Blue</button>
+        <button type="button" aria-pressed="false" data-palette="graphite">Graphite</button>
+      </div>
+      <p class="mono">One design for every app. The colors change.</p>
+    </div>
+
+    <div class="devices rail" aria-label="The app design on iPhone, day and night">
+      <!-- Day -->
+      <figure class="device">
+        <div class="phone">
+          <div class="screen day">
+            <div class="atmos-light" aria-hidden="true"><i></i><i></i></div>
+            <div class="island"></div>
+            <div class="status"><span>9:41</span>
+              <span class="status-icons" aria-hidden="true">
+                <svg viewBox="0 0 18 11"><rect x="0" y="7" width="3" height="4" rx="1" fill="currentColor"/><rect x="5" y="5" width="3" height="6" rx="1" fill="currentColor"/><rect x="10" y="2.5" width="3" height="8.5" rx="1" fill="currentColor"/><rect x="15" y="0" width="3" height="11" rx="1" fill="currentColor"/></svg>
+                <svg viewBox="0 0 16 11"><path d="M8 2.2c2.3 0 4.4.9 6 2.4l1.1-1.1A10 10 0 0 0 8 .6 10 10 0 0 0 .9 3.5L2 4.6a8.5 8.5 0 0 1 6-2.4Zm0 3.2c1.4 0 2.7.5 3.7 1.4l1.1-1.1A7 7 0 0 0 8 3.8a7 7 0 0 0-4.8 1.9l1.1 1.1c1-.9 2.3-1.4 3.7-1.4Zm0 3.2c.6 0 1.1.2 1.5.6L8 10.7 6.5 9.2c.4-.4.9-.6 1.5-.6Z" fill="currentColor"/></svg>
+                <svg viewBox="0 0 26 12"><rect x=".5" y=".5" width="22" height="11" rx="3.5" stroke="currentColor" fill="none" opacity=".5"/><rect x="2" y="2" width="16" height="8" rx="2" fill="currentColor"/><rect x="23.5" y="4" width="1.5" height="4" rx=".75" fill="currentColor" opacity=".5"/></svg>
+              </span>
+            </div>
+            <div class="s-head">
+              <h3 class="s-title"><span>Today</span><span>Sat, Oct 4</span></h3>
+              <span class="s-circle" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 6h8M15 6h2M3 14h2M9 14h8"/><circle cx="13" cy="6" r="2"/><circle cx="7" cy="14" r="2"/></svg></span>
+            </div>
+            <div class="stack">
+              <div class="sheet sheet-back">
+                <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.2" fill="none" stroke="currentColor" stroke-opacity=".18" stroke-width="1.8"/><path d="M8 1.8a6.2 6.2 0 0 1 5.6 8.9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                Overall progress <b>62%</b>
+              </div>
+              <div class="sheet sheet-front">
+                <div class="sf-top"><span>Today's focus</span><span class="avatar" aria-hidden="true">C</span></div>
+                <h4>Ship the onboarding flow</h4>
+                <p>Final pass on the questionnaire screens, then send the build to TestFlight.</p>
+                <div class="sf-foot">
+                  <span class="pill-ink"><span class="play"><svg viewBox="0 0 10 10"><path d="M2 1.2v7.6L8.6 5 2 1.2Z" fill="#0A0A0B"/></svg></span>Start task</span>
+                  <span class="dur"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="7" cy="7" r="5.6"/><path d="M7 4v3.2l2 1.3" stroke-linecap="round"/></svg>2h</span>
+                </div>
+              </div>
+              <div class="sheet sheet-under">Next up <b>Paywall copy review</b></div>
+            </div>
+            <div class="week">
+              <div class="week-head"><span>This week</span><b>Sep 29 – Oct 5</b></div>
+              <ol class="days">
+                <li><span>M</span><b>29</b><i></i></li>
+                <li><span>T</span><b>30</b><i></i></li>
+                <li><span>W</span><b>1</b><i class="no"></i></li>
+                <li><span>T</span><b>2</b><i></i></li>
+                <li><span>F</span><b>3</b><i></i></li>
+                <li class="on"><span>S</span><b>4</b><i></i></li>
+                <li><span>S</span><b>5</b><i class="no"></i></li>
+              </ol>
+            </div>
+            <div class="s-prompt">Plan my afternoon<span class="send"><svg viewBox="0 0 12 12"><path d="M6 10V2M2.5 5.5 6 2l3.5 3.5" stroke="#FFFFFF" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+            <div class="home"></div>
+          </div>
+        </div>
+        <figcaption class="mono">Atmos Glass · day</figcaption>
+      </figure>
+
+      <!-- Night -->
+      <figure class="device">
+        <div class="phone">
+          <div class="screen night">
+            <div class="atmos-light" aria-hidden="true"><i></i><i></i></div>
+            <div class="island"></div>
+            <div class="status"><span>21:30</span>
+              <span class="status-icons" aria-hidden="true">
+                <svg viewBox="0 0 18 11"><rect x="0" y="7" width="3" height="4" rx="1" fill="currentColor"/><rect x="5" y="5" width="3" height="6" rx="1" fill="currentColor"/><rect x="10" y="2.5" width="3" height="8.5" rx="1" fill="currentColor"/><rect x="15" y="0" width="3" height="11" rx="1" fill="currentColor"/></svg>
+                <svg viewBox="0 0 16 11"><path d="M8 2.2c2.3 0 4.4.9 6 2.4l1.1-1.1A10 10 0 0 0 8 .6 10 10 0 0 0 .9 3.5L2 4.6a8.5 8.5 0 0 1 6-2.4Zm0 3.2c1.4 0 2.7.5 3.7 1.4l1.1-1.1A7 7 0 0 0 8 3.8a7 7 0 0 0-4.8 1.9l1.1 1.1c1-.9 2.3-1.4 3.7-1.4Zm0 3.2c.6 0 1.1.2 1.5.6L8 10.7 6.5 9.2c.4-.4.9-.6 1.5-.6Z" fill="currentColor"/></svg>
+                <svg viewBox="0 0 26 12"><rect x=".5" y=".5" width="22" height="11" rx="3.5" stroke="currentColor" fill="none" opacity=".5"/><rect x="2" y="2" width="11" height="8" rx="2" fill="currentColor"/><rect x="23.5" y="4" width="1.5" height="4" rx=".75" fill="currentColor" opacity=".5"/></svg>
+              </span>
+            </div>
+            <div class="s-head">
+              <h3 class="s-title"><span>Tonight</span><span>Sat, Oct 4</span></h3>
+              <div class="s-ring" aria-hidden="true">
+                <svg viewBox="0 0 66 66"><circle cx="33" cy="33" r="31" fill="none" stroke="#FFFFFF" stroke-opacity=".18" stroke-width="1.5"/><path d="M33 2a31 31 0 0 1 22.6 52.2" fill="none" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round"/></svg>
+                <span><b>62%</b><small>of today</small></span>
+              </div>
+            </div>
+            <div class="stack">
+              <div class="sheet sheet-front" style="margin-top:0">
+                <div class="sf-top"><span>Wind-down</span><span class="avatar" aria-hidden="true">C</span></div>
+                <h4>Review tomorrow's builds</h4>
+                <p>Three TestFlight builds are waiting. Check the paywall on the small iPhone first.</p>
+                <div class="sf-foot">
+                  <span class="pill-ink">Start review <span class="quiet">40 min</span></span>
+                </div>
+              </div>
+              <div class="sheet sheet-under">Then <b>Lights out at 23:00</b></div>
+            </div>
+            <div class="week">
+              <div class="week-head"><span>This week</span><b>Sep 29 – Oct 5</b></div>
+              <ol class="days">
+                <li><span>M</span><b>29</b><i></i></li>
+                <li><span>T</span><b>30</b><i></i></li>
+                <li><span>W</span><b>1</b><i></i></li>
+                <li><span>T</span><b>2</b><i class="no"></i></li>
+                <li><span>F</span><b>3</b><i></i></li>
+                <li class="on"><span>S</span><b>4</b><i></i></li>
+                <li><span>S</span><b>5</b><i class="no"></i></li>
+              </ol>
+            </div>
+            <div class="s-prompt">Move my 9am to Monday<span class="send"><svg viewBox="0 0 12 12"><path d="M6 10V2M2.5 5.5 6 2l3.5 3.5" stroke="#FFFFFF" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+            <div class="home"></div>
+          </div>
+        </div>
+        <figcaption class="mono">Atmos Glass · night</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- PRINCIPLES -->
+  <section class="section" id="principles">
+    <div class="wrap split">
+      <div class="split-head reveal">
+        <p class="label">Principles</p>
+        <h2 class="title two-tone"><span>Six rules</span><span>behind every screen.</span></h2>
+        <p class="muted">Pulled from the references you sent and everything you've rejected before.</p>
+      </div>
+      <ul class="rows">
+        <li class="reveal"><h3>Rich, never busy</h3><p>Every screen is full of real, useful content. Nothing empty, nothing there just to decorate.</p></li>
+        <li class="reveal"><h3>Solid color only</h3><p>No gradients on anything. Depth comes from light, glass and soft shadow.</p></li>
+        <li class="reveal"><h3>One accent, at most</h3><p>Ink, a quiet gray and hairlines do the work. The main action is a black pill.</p></li>
+        <li class="reveal"><h3>Glass is for navigation</h3><p>Bars, floating controls and sheets are glass. Content stays solid and easy to read.</p></li>
+        <li class="reveal"><h3>Bold, never skinny</h3><p>One typeface per product. Headings at 500 to 700 with tight tracking.</p></li>
+        <li class="reveal"><h3>Calm motion</h3><p>Short, physical easing. No splash animations, no confetti, no scroll-jacking.</p></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- THEMES -->
+  <section class="section" id="themes">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="label">Themes</p>
+        <h2 class="title two-tone"><span>Four looks.</span><span>Chosen by the subject.</span></h2>
+        <p class="lede">A travel app might earn parallax photography; a planner gets frosted sheets. An existing app always keeps its own look.</p>
+      </div>
+      <div class="themes">
+        <article class="theme reveal">
+          <div class="tp tp-quiet" aria-hidden="true">
+            <canvas class="stipple" data-density=".8" data-drift="off"></canvas>
+            <div class="mini-nav"><i></i><i></i><i></i></div>
+            <div class="mini-hero"><b>Calm canvas.<span>Product first.</span></b><em>Download</em></div>
+          </div>
+          <div class="theme-body">
+            <h3>Quiet Glass</h3>
+            <p>The default. Websites, SaaS, AI tools and every app's marketing site. From spacefs.com.</p>
+            <ul class="sw"><li style="--c:#F5F6F8">F5F6F8</li><li style="--c:#0E0F12">0E0F12</li><li style="--c:#686D78">686D78</li><li style="--c:#0A84FF">0A84FF</li></ul>
+          </div>
+        </article>
+
+        <article class="theme reveal">
+          <div class="tp tp-atmos" aria-hidden="true">
+            <div class="glow"></div>
+            <div class="peek"></div>
+            <div class="mini-sheet"><small>Today's focus</small><b>Weekly review</b><em>Start task</em></div>
+            <div class="mini-prompt">Plan my afternoon<i><svg viewBox="0 0 12 12"><path d="M6 10V2M2.5 5.5 6 2l3.5 3.5" stroke="#FFFFFF" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></i></div>
+          </div>
+          <div class="theme-body">
+            <h3>Atmos Glass</h3>
+            <p>The design of every iOS app, in any palette. On the web: planners, AI and health.</p>
+            <ul class="sw"><li style="--c:#EEF0F3">EEF0F3</li><li style="--c:#6F95B2">6F95B2</li><li style="--c:#111214">111214</li><li style="--c:#0A0A0B">0A0A0B</li></ul>
+          </div>
+        </article>
+
+        <article class="theme reveal">
+          <div class="tp tp-journey" aria-hidden="true">
+            <svg viewBox="0 0 400 214" preserveAspectRatio="xMidYMax slice">
+              <circle cx="300" cy="62" r="20" fill="#F3E8D6"/>
+              <path d="M0 120 L50 98 L92 112 L140 78 L190 108 L236 86 L290 114 L340 80 L400 104 V214 H0Z" fill="#BAC6D2"/>
+              <path d="M0 146 L60 126 L120 150 L180 118 L240 146 L300 124 L360 150 L400 136 V214 H0Z" fill="#93A5B6"/>
+              <path d="M0 170 C60 156 120 168 180 158 C240 148 300 168 400 160 V214 H0Z" fill="#657989"/>
+              <path d="M0 196 C90 186 190 194 280 188 C330 185 370 190 400 192 V214 H0Z M44 150 L56 192 H32Z M70 162 L80 194 H60Z M330 146 L343 190 H317Z" fill="#34414E"/>
+            </svg>
+            <div class="cap"><b>Day 3 · Dolomites</b><small>4 stops · 2 h 10 min</small></div>
+          </div>
+          <div class="theme-body">
+            <h3>Parallax Journey</h3>
+            <p>Travel, food, places and events. Photography carries the color; layers move at different speeds.</p>
+            <ul class="sw"><li style="--c:#DDE4EB">DDE4EB</li><li style="--c:#93A5B6">93A5B6</li><li style="--c:#34414E">34414E</li><li style="--c:#FFFFFF">Glass</li></ul>
+          </div>
+        </article>
+
+
+        <article class="theme reveal">
+          <div class="tp tp-nocturne" aria-hidden="true">
+            <div class="moon"></div>
+            <div class="nc-copy"><b>1h 12m</b><small>left today</small><em><i></i>Start focus</em></div>
+            <svg viewBox="0 0 400 100" preserveAspectRatio="none">
+              <path d="M0 50 L70 30 L130 46 L200 18 L270 44 L330 26 L400 40 V100 H0Z" fill="#17181C"/>
+              <path d="M0 74 C80 62 160 72 240 64 C310 58 360 66 400 70 V100 H0Z" fill="#202127"/>
+            </svg>
+          </div>
+          <div class="theme-body">
+            <h3>Nocturne</h3>
+            <p>Screen time, sleep, focus and finance, only when dark fits. Flat chrome, one accent, real landscapes.</p>
+            <ul class="sw"><li style="--c:#0A0A0A">0A0A0A</li><li style="--c:#F2F2F0">F2F2F0</li><li style="--c:#9B9BA1">9B9BA1</li><li style="--c:#7AA2FF">Brand</li></ul>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- TYPE -->
+  <section class="section" id="type">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="label">Type</p>
+        <h2 class="title two-tone"><span>One family.</span><span>Never skinny.</span></h2>
+      </div>
+      <div class="type-grid">
+        <div class="card aa reveal">
+          <span class="aa-glyph" aria-hidden="true">Aa</span>
+          <div>
+            <p class="heading">Google Sans</p>
+            <p class="muted">Variable, 400 to 700. Google Sans Code for numbers and labels.</p>
+          </div>
+          <p class="aa-note">On iOS: SF Pro, bold titles with tight tracking, monospaced digits that roll when they change.</p>
+        </div>
+        <ol class="card scale reveal">
+          <li><span class="mono">Display · 92 · 560</span><span class="t-display">Quiet glass.</span></li>
+          <li><span class="mono">Title · 60 · 560</span><span class="t-title">Built to feel expensive.</span></li>
+          <li><span class="mono">Heading · 24 · 500</span><span class="t-heading">Rich, never busy</span></li>
+          <li><span class="mono">Body · 17 · 400</span><span class="t-body">Every screen is full of real, useful content and nothing else.</span></li>
+          <li><span class="mono">Label · 12 · 500</span><span class="label">This week</span></li>
+          <li><span class="mono">Mono · 13 · 400</span><span class="mono">$39.99 / year · 7-day trial</span></li>
+          <li><span class="mono">Never below 400</span><span class="t-skinny">Skinny text</span></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPONENTS -->
+  <section class="section" id="components">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="label">Components</p>
+        <h2 class="title two-tone"><span>Few parts.</span><span>Used everywhere.</span></h2>
+        <p class="lede">Each part is in tokens.css or this page, ready to copy. Class names are under each one.</p>
+      </div>
+      <div class="board reveal">
+        <div class="cell">
+          <p class="mono">.btn-primary · .btn-glass · .btn-circle · .chip</p>
+          <div class="stack-v">
+            <div class="row">
+              <a class="btn btn-primary" href="#use">Download</a>
+              <a class="btn btn-glass" href="#themes">Learn more</a>
+            </div>
+            <div class="row">
+              <a class="btn btn-circle" href="#use" aria-label="Next section"><svg class="arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10h12M11 5l5 5-5 5"/></svg></a>
+              <span class="chip"><span class="chip-dot" aria-hidden="true"></span>New · Offline maps</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="cell">
+          <p class="mono">.segmented · pricing mirrors the paywall</p>
+          <div class="price">
+            <div class="segmented" role="group" aria-label="Billing period">
+              <button type="button" aria-pressed="false" data-plan="monthly">Monthly</button>
+              <button type="button" aria-pressed="true" data-plan="annual">Annual</button>
+            </div>
+            <div data-show="annual">
+              <div class="price-top"><b>Annual</b><span class="badge-save">Save 67%</span></div>
+              <div class="price-amount"><strong>$39.99</strong><span>/ year</span><s>$119.88</s></div>
+              <small>7-day free trial, then $3.33 a month.</small>
+            </div>
+            <div data-show="monthly" hidden>
+              <div class="price-top"><b>Monthly</b></div>
+              <div class="price-amount"><strong>$9.99</strong><span>/ month</span></div>
+              <small>Cancel anytime. Lifetime is $129.99 once.</small>
+            </div>
+            <a class="btn btn-primary" href="#use">Start free trial</a>
+          </div>
+        </div>
+
+        <div class="cell">
+          <p class="mono">.link-card · arrow nudges 4px on hover</p>
+          <a class="link-card" href="#motion">
+            <span><small>Building for iOS?</small><b>Open the SwiftUI guide</b></span>
+            <span class="btn btn-circle" aria-hidden="true"><svg class="arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10h12M11 5l5 5-5 5"/></svg></span>
+          </a>
+        </div>
+
+        <div class="cell">
+          <p class="mono">.prompt · .glass</p>
+          <div class="stack-v" style="justify-items:stretch">
+          <div class="well">
+            <form class="prompt glass" id="prompt-form">
+              <input id="prompt-input" name="prompt" type="text" placeholder="A travel app with parallax" autocomplete="off" aria-label="Describe an app">
+              <button type="submit" aria-label="Send"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 13V3M3.5 7.5 8 3l4.5 4.5"/></svg></button>
+            </form>
+          </div>
+          <p class="prompt-note" id="prompt-note" aria-live="polite">The entry point for AI features: small, glass, centered.</p>
+          </div>
+        </div>
+
+        <div class="cell">
+          <p class="mono">&lt;details&gt; · .faq</p>
+          <div class="faq">
+            <details>
+              <summary>Will it change my existing apps?<i><svg viewBox="0 0 12 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6 1.5v9M1.5 6h9"/></svg></i></summary>
+              <p>No. An app that already has its own look keeps it, unless you ask for a change.</p>
+            </details>
+            <details>
+              <summary>Can I still ask for something else?<i><svg viewBox="0 0 12 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6 1.5v9M1.5 6h9"/></svg></i></summary>
+              <p>Yes. Your newest words override the skill, every time.</p>
+            </details>
+            <details>
+              <summary>What about the iOS apps I'm sending?<i><svg viewBox="0 0 12 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6 1.5v9M1.5 6h9"/></svg></i></summary>
+              <p>Each one gets analyzed and added as a theme, or as a refinement of one.</p>
+            </details>
+          </div>
+        </div>
+
+        <div class="cell">
+          <p class="mono">--shadow-1 · --shadow-2 · --shadow-3</p>
+          <div class="stack-v">
+            <p class="label">Depth</p>
+            <div class="row" style="gap:14px">
+              <span class="chip">shadow-1</span>
+              <span class="chip" style="box-shadow:var(--shadow-2)">shadow-2</span>
+              <span class="chip" style="box-shadow:var(--shadow-3)">shadow-3</span>
+            </div>
+            <p class="muted" style="font-size:14.5px">Hairline ring, soft layered shadow with negative spread, faint top highlight. Never a heavy drop shadow.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MOTION -->
+  <section class="motion" id="motion">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="label">Motion</p>
+        <h2 class="title two-tone"><span>Quiet and physical.</span><span>Parallax when it earns it.</span></h2>
+      </div>
+    </div>
+    <div class="journey" aria-label="Parallax demo: mountain layers moving at different speeds">
+      <div class="journey-stage">
+        <div class="layer l-sun" aria-hidden="true"><svg viewBox="0 0 1440 480" preserveAspectRatio="xMidYMax slice"><circle cx="1050" cy="150" r="56"/></svg></div>
+        <div class="layer l-far" aria-hidden="true"><svg viewBox="0 0 1440 480" preserveAspectRatio="xMidYMax slice"><path d="M0 300 L120 252 L210 280 L330 190 L450 262 L560 212 L700 272 L820 172 L940 242 L1060 204 L1180 262 L1300 212 L1440 252 V480 H0Z"/></svg></div>
+        <div class="layer l-mid" aria-hidden="true"><svg viewBox="0 0 1440 480" preserveAspectRatio="xMidYMax slice"><path d="M0 340 L90 312 L200 350 L320 272 L430 332 L540 292 L660 360 L780 282 L900 342 L1010 302 L1130 360 L1250 302 L1360 332 L1440 312 V480 H0Z"/></svg></div>
+        <div class="layer l-near" aria-hidden="true"><svg viewBox="0 0 1440 480" preserveAspectRatio="xMidYMax slice"><path d="M0 392 C120 362 220 382 320 352 C430 320 520 372 640 362 C760 352 860 322 980 347 C1100 372 1200 332 1320 342 C1380 347 1420 360 1440 362 V480 H0Z"/></svg></div>
+        <div class="layer l-front" aria-hidden="true"><svg viewBox="0 0 1440 480" preserveAspectRatio="xMidYMax slice"><path d="M0 442 C160 422 300 432 460 417 C620 402 760 432 920 427 C1080 422 1240 402 1440 420 V480 H0Z M150 342 L174 432 H126Z M198 364 L217 436 H179Z M1236 334 L1262 424 H1210Z M1284 356 L1303 426 H1265Z M1330 372 L1346 428 H1314Z"/></svg></div>
+        <div class="journey-card glass">
+          <p class="label">Parallax Journey</p>
+          <h3>Layers move. The interface stays still.</h3>
+          <p>Two to four layers, each at its own speed, pure CSS. Static and complete under Reduce Motion.</p>
+          <p class="mono">Day 3 · 4 stops · 2 h 10 min driving</p>
+        </div>
+      </div>
+    </div>
+    <div class="wrap">
+      <div class="specs">
+        <div class="spec reveal">
+          <h3>Easing</h3>
+          <p><code>cubic-bezier(.22, 1, .36, 1)</code> on the web, <code>.smooth</code> and <code>.snappy</code> springs on iOS.</p>
+          <div class="ease-demo" tabindex="0" role="img" aria-label="Hover to see the easing"><span></span></div>
+        </div>
+        <div class="spec reveal">
+          <h3>Duration</h3>
+          <p>160 ms for hover, 320 ms for interface changes, 560 ms for reveals. One orchestrated moment per page, at most.</p>
+        </div>
+        <div class="spec reveal">
+          <h3>Respect</h3>
+          <p>Reduce Motion makes everything static. Reduce Transparency turns glass solid. Nothing waits invisible for a script.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEVER -->
+  <section class="section" id="never">
+    <div class="wrap split">
+      <div class="split-head reveal">
+        <p class="label">Never</p>
+        <h2 class="title two-tone"><span>What makes it</span><span>look made by AI.</span></h2>
+        <p class="muted">Every item here is something you rejected in a past project.</p>
+      </div>
+      <ul class="never">
+        <li><i><svg viewBox="0 0 10 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 2l6 6M8 2 2 8"/></svg></i>Gradient colors</li>
+        <li><i><svg viewBox="0 0 10 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 2l6 6M8 2 2 8"/></svg></i>Emoji in the interface</li>
+        <li><i><svg viewBox="0 0 10 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 2l6 6M8 2 2 8"/></svg></i>Thin, skinny type</li>
+        <li><i><svg viewBox="0 0 10 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 2l6 6M8 2 2 8"/></svg></i>Neon glows and halos</li>
+        <li><i><svg viewBox="0 0 10 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 2l6 6M8 2 2 8"/></svg></i>Animated splash screens</li>
+        <li><i><svg viewBox="0 0 10 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 2l6 6M8 2 2 8"/></svg></i>Confetti and bouncing</li>
+        <li><i><svg viewBox="0 0 10 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 2l6 6M8 2 2 8"/></svg></i>Empty, dead screens</li>
+        <li><i><svg viewBox="0 0 10 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 2l6 6M8 2 2 8"/></svg></i>Bands that appear on scroll</li>
+        <li><i><svg viewBox="0 0 10 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 2l6 6M8 2 2 8"/></svg></i>Logos in white boxes</li>
+        <li><i><svg viewBox="0 0 10 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 2l6 6M8 2 2 8"/></svg></i>Cropped images</li>
+        <li><i><svg viewBox="0 0 10 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 2l6 6M8 2 2 8"/></svg></i>Several typefaces</li>
+        <li><i><svg viewBox="0 0 10 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 2l6 6M8 2 2 8"/></svg></i>Icon-in-a-circle rows</li>
+        <li><i><svg viewBox="0 0 10 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 2l6 6M8 2 2 8"/></svg></i>Fake stats and reviews</li>
+        <li><i><svg viewBox="0 0 10 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 2l6 6M8 2 2 8"/></svg></i>Copying a reference word for word</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="section" id="use">
+    <div class="wrap split">
+      <div class="split-head reveal">
+        <p class="label">How it works</p>
+        <h2 class="title two-tone"><span>Ask for an app.</span><span>The taste comes with it.</span></h2>
+      </div>
+      <div>
+        <ol class="steps">
+          <li class="reveal"><span class="mono">01</span><div><h3>Read the project</h3><p>An existing app keeps its own look. Your newest words beat everything.</p></div></li>
+          <li class="reveal"><span class="mono">02</span><div><h3>Pick a theme for the subject</h3><p>Travel gets parallax, a planner gets frosted sheets, a website gets Quiet Glass.</p></div></li>
+          <li class="reveal"><span class="mono">03</span><div><h3>Build in phases</h3><p>Screen by screen, never one shot.</p></div></li>
+          <li class="reveal"><span class="mono">04</span><div><h3>Screenshot and check</h3><p>Full size, light and dark, phone width, mid-scroll, against the Never list.</p></div></li>
+          <li class="reveal"><span class="mono">05</span><div><h3>Show it short</h3><p>Before and after, two or three lines, and what to test on your phone.</p></div></li>
+        </ol>
+        <div class="card use-card reveal">
+          <p class="label">Installed at</p>
+          <div class="path"><code id="skill-path">~/.claude/skills/taste</code><button class="btn btn-sm btn-glass" type="button" id="copy-btn">Copy</button></div>
+          <p>It loads by itself for any app, site or screen. Type <code>/taste</code> to call it directly. It's backed up privately on GitHub, and the Download button at the bottom of this page always gets the latest version.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="foot-row">
+      <div class="foot-copy"><p>Personal design language for iOS and the web.</p><p class="mono">v1 · Oct 4, 2026</p></div>
+      <div class="foot-actions">
+        <a class="btn btn-primary" href="https://github.com/csamaha655-eng/claude-taste/releases/latest/download/taste.zip" target="_blank" rel="noopener">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3v10M5.5 8.5 10 13l4.5-4.5M4 16.5h12"/></svg>
+          Download the skill
+        </a>
+        <a class="btn btn-glass" href="https://github.com/csamaha655-eng/claude-taste" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+    <p class="mono foot-note">taste.zip · always the latest version · works in Claude Code and on claude.ai · private repo, sign in to GitHub first</p>
+  </div>
+  <div class="wordmark dot-matrix" aria-hidden="true">taste</div>
+</footer>
+
+<script src="stipple.js"></script>
+<script>
+(() => {
+  const menuBtn = document.querySelector('.menu-btn');
+  const panel = document.getElementById('menu');
+  const setMenu = (open) => { panel.hidden = !open; menuBtn.setAttribute('aria-expanded', String(open)); };
+  menuBtn.addEventListener('click', () => setMenu(panel.hidden));
+  panel.addEventListener('click', (e) => { if (e.target.closest('a')) setMenu(false); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setMenu(false); });
+
+  document.querySelectorAll('.segmented').forEach((seg) => {
+    seg.addEventListener('click', (e) => {
+      const btn = e.target.closest('button');
+      if (!btn) return;
+      seg.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+      seg.parentElement.querySelectorAll('[data-show]').forEach((el) => { el.hidden = el.dataset.show !== btn.dataset.plan; });
+    });
+  });
+
+  const devices = document.querySelector('.devices');
+  document.querySelector('.palette-switch .segmented').addEventListener('click', (e) => {
+    const btn = e.target.closest('button');
+    if (btn) devices.dataset.palette = btn.dataset.palette;
+  });
+
+  const form = document.getElementById('prompt-form');
+  const note = document.getElementById('prompt-note');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const value = form.prompt.value.trim();
+    note.textContent = value ? 'Demo only. In Claude Code, just ask: "' + value + '".' : 'Type an idea first.';
+  });
+
+  const copyBtn = document.getElementById('copy-btn');
+  const pathEl = document.getElementById('skill-path');
+  copyBtn.addEventListener('click', () => {
+    const done = () => { copyBtn.textContent = 'Copied'; setTimeout(() => { copyBtn.textContent = 'Copy'; }, 1600); };
+    const fallback = () => { const r = document.createRange(); r.selectNodeContents(pathEl); const s = getSelection(); s.removeAllRanges(); s.addRange(r); copyBtn.textContent = 'Selected'; };
+    try { navigator.clipboard.writeText(pathEl.textContent).then(done, fallback); } catch { fallback(); }
+  });
+})();
+</script>
+</body>
+</html>
