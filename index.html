@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
 <title>Taste Style Board</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27%3E%3Crect x=%272%27 y=%278%27 width=%2712%27 height=%278%27 rx=%274%27 fill=%27%230E0F12%27/%3E%3Ccircle cx=%2718.5%27 cy=%2712%27 r=%274%27 fill=%27%230E0F12%27/%3E%3C/svg%3E">
 <meta name="theme-color" content="#F7F8FA" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0C0D10" media="(prefers-color-scheme: dark)">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -54,17 +55,22 @@ code { font-family: var(--font-mono); font-size: .9em; }
 .nav > * { pointer-events: auto; }
 .logo { width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; background: var(--surface); box-shadow: var(--shadow-2); color: var(--ink); }
 .logo svg { width: 24px; height: 24px; }
-.nav-pill { position: absolute; left: 50%; transform: translateX(-50%); display: flex; gap: 2px; padding: 5px; border-radius: var(--r-pill); }
-.nav-pill a { padding: 10px 15px; border-radius: var(--r-pill); font-size: 14px; font-weight: 500; line-height: 1; color: var(--ink-2); transition: color var(--dur-1) var(--ease-std), background-color var(--dur-1) var(--ease-std); }
-.nav-pill a:hover { color: var(--ink); background: color-mix(in srgb, var(--ink) 6%, transparent); }
-.menu-btn { display: none; }
-.menu-panel { position: fixed; z-index: 51; top: calc(env(safe-area-inset-top, 0px) + 74px); left: 50%; transform: translateX(-50%); width: min(320px, calc(100vw - 32px)); padding: 8px; border-radius: 24px; display: grid; }
-.menu-panel a { padding: 13px 16px; border-radius: 16px; font-weight: 500; color: var(--ink); }
-.menu-panel a:hover { background: color-mix(in srgb, var(--ink) 6%, transparent); }
-@media (max-width: 920px) {
-  .nav-pill a { display: none; }
-  .menu-btn { display: inline-flex; }
-}
+/* The spacefs menu: the glass Menu pill grows into the panel (base in tokens.css, .menu-morph) */
+.menu-morph { top: calc(env(safe-area-inset-top, 0px) + 14px); }
+.menu-toggle { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; height: 50px; padding: 0 18px; border: 0; background: none; color: var(--ink); font: 500 14px/1 var(--font); cursor: pointer; }
+.menu-toggle svg { width: 18px; height: 18px; flex: none; }
+.menu-toggle .open-only, .menu-morph[data-open] .menu-toggle .closed-only { display: none; }
+.menu-morph[data-open] .menu-toggle .open-only { display: inline; }
+.menu-body { position: relative; left: 50%; translate: -50% 0; width: min(520px, 100vw - 32px); display: grid; grid-template-columns: 1fr 1fr; gap: 4px 24px; padding: 6px 28px 22px; }
+.menu-group .label { margin: 0 0 6px; }
+.menu-group a { display: flex; align-items: center; min-height: 44px; font-size: 26px; font-weight: 500; letter-spacing: -0.02em; color: var(--ink); transition: opacity var(--dur-1) var(--ease-std); }
+.menu-group a:hover { opacity: .7; }
+.menu-foot { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 0 24px; margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--hairline); }
+.menu-foot a { display: inline-flex; align-items: center; min-height: 44px; font-size: 15px; color: var(--ink-2); }
+.menu-foot a:hover { color: var(--ink); }
+@media (max-width: 600px) { .menu-body { grid-template-columns: 1fr; } }
+/* spacefs: the nav's action pill hides on phones; the hero and the menu carry it */
+@media (max-width: 639px) { .nav > .btn-primary { display: none; } }
 @media (max-width: 420px) {
   .nav .btn-primary { --h: 40px; padding: 0 16px; font-size: 14px; }
   .logo { width: 44px; height: 44px; }
@@ -213,6 +219,19 @@ code { font-family: var(--font-mono); font-size: .9em; }
 .tp-journey .cap small { display: block; font: 10.5px/1.4 var(--font-mono); color: #4C525C; margin-top: 2px; }
 
 
+.tp-store { height: auto; padding: 46px 16px 54px; background: #FFFFFF; color: #0B0B0B; box-shadow: inset 0 0 0 1px #EDEDED; }
+.tp-store .st-head { position: absolute; top: 0; left: 0; right: 0; height: 34px; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; border-bottom: 1px solid #EDEDED; background: rgb(255 255 255 / .45); }
+.tp-store .st-head b { font-size: 11px; font-weight: 700; letter-spacing: .32em; }
+.tp-store .st-head svg { width: 14px; height: 14px; }
+.tp-store .st-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; }
+.tp-store .ph { position: relative; height: clamp(96px, 11vw, 150px); display: grid; place-items: center; background: #F4F4F4; }
+.tp-store .ph svg { width: 44%; max-width: 64px; }
+.tp-store .ph small { position: absolute; top: 6px; right: 6px; padding: 2px 5px; background: #FFFFFF; font-size: 8.5px; letter-spacing: .1em; }
+.tp-store .st-card b { display: block; margin-top: 7px; font-size: 10.5px; font-weight: 500; }
+.tp-store .st-card span { display: block; margin-top: 2px; font-size: 10px; color: #6F6F6F; }
+.tp-store .st-club { position: absolute; left: 0; right: 0; bottom: 0; height: 38px; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; background: #0B0B0B; color: #FFFFFF; font-size: 9.5px; letter-spacing: .16em; }
+@media (max-width: 720px) { .tp-store .st-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } .tp-store .st-card:nth-child(n+4) { display: none; } }
+.theme-wide { grid-column: 1 / -1; }
 .tp-nocturne { background: #0A0A0A; color: #F2F2F0; }
 .tp-nocturne .moon { position: absolute; right: 34px; top: 30px; width: 26px; height: 26px; border-radius: 50%; background: #E7E2D6; }
 .tp-nocturne .nc-copy { position: absolute; left: 20px; top: 26px; }
@@ -234,7 +253,7 @@ code { font-family: var(--font-mono); font-size: .9em; }
 .scale li { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 20px; align-items: baseline; padding: 20px 0; border-top: 1px solid var(--hairline); }
 .scale li:first-child { border-top: 0; }
 .scale .mono { color: var(--ink-2); font-size: 12px; }
-.scale .t-display { font-size: clamp(40px, 5vw, 64px); line-height: 1.02; letter-spacing: -0.035em; font-weight: 400; }
+.scale .t-display { font-size: clamp(40px, 5vw, 64px); line-height: 1.02; letter-spacing: -0.035em; font-weight: 500; }
 .scale .t-title { font-size: clamp(28px, 3.2vw, 40px); line-height: 1.04; letter-spacing: -0.035em; font-weight: 500; }
 .scale .t-heading { font-size: 24px; letter-spacing: -0.02em; font-weight: 500; }
 .scale .t-body { font-size: 17px; color: var(--ink-2); }
@@ -272,7 +291,8 @@ code { font-family: var(--font-mono); font-size: .9em; }
 .prompt { display: flex; align-items: center; gap: 10px; width: 100%; height: 52px; padding: 0 7px 0 20px; border-radius: var(--r-pill); }
 .prompt input { flex: 1; min-width: 0; border: 0; background: transparent; font: 400 15px/1 var(--font); color: var(--ink); outline: none; }
 .prompt input::placeholder { color: var(--ink-2); }
-.prompt button { flex: none; width: 38px; height: 38px; border: 0; border-radius: 50%; display: grid; place-items: center; background: var(--primary); color: var(--on-primary); cursor: pointer; transition: transform 90ms var(--ease-out); }
+.prompt button { flex: none; position: relative; width: 38px; height: 38px; border: 0; border-radius: 50%; display: grid; place-items: center; background: var(--primary); color: var(--on-primary); cursor: pointer; transition: transform 90ms var(--ease-out); }
+.prompt button::before { content: ""; position: absolute; inset: -3px; } /* 44px touch target around the 38px circle */
 .prompt button:active { transform: scale(.94); }
 .prompt button svg { width: 16px; height: 16px; }
 .prompt-note { font-size: 13px; color: var(--ink-2); min-height: 1.4em; }
@@ -353,6 +373,9 @@ code { font-family: var(--font-mono); font-size: .9em; }
 .foot-copy { display: grid; gap: 6px; }
 .foot-actions { display: flex; flex-wrap: wrap; gap: 10px; }
 .foot-note { margin-top: 16px; color: var(--ink-2); font-size: 12px; }
+.foot-note + .foot-note { margin-top: 6px; }
+.foot-link { display: inline-flex; align-items: center; min-height: 44px; color: var(--ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--hairline); }
+.foot-link:hover { text-decoration-color: currentColor; }
 .foot-row .mono { color: var(--ink-2); font-size: 12px; }
 @media (max-width: 600px) { .wordmark.dot-matrix { background-image: radial-gradient(circle at center, var(--ink-3) .8px, transparent 1.1px); background-size: 4px 4px; } }
 .wordmark { margin: clamp(28px, 4vw, 48px) 0 -0.2em; text-align: center; font-size: clamp(140px, 31vw, 440px); line-height: .8; letter-spacing: -0.065em; font-weight: 650; user-select: none; }
@@ -365,30 +388,35 @@ code { font-family: var(--font-mono); font-size: .9em; }
   <a class="logo" href="#top" aria-label="Taste, back to top">
     <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="8" width="12" height="8" rx="4" fill="currentColor"/><circle cx="18.5" cy="12" r="4" fill="currentColor"/></svg>
   </a>
-  <nav class="nav-pill glass" aria-label="Sections">
-    <a href="#principles">Principles</a>
-    <a href="#themes">Themes</a>
-    <a href="#type">Type</a>
-    <a href="#components">Components</a>
-    <a href="#motion">Motion</a>
-    <a href="#shipping">Shipping</a>
-    <button class="btn btn-sm menu-btn" type="button" aria-expanded="false" aria-controls="menu">
-      <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 7h12M4 13h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-      Menu
+  <div class="menu-morph glass-control" id="menu">
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="menu-body">
+      <svg class="closed-only" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 7h12M4 13h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <svg class="open-only" viewBox="0 0 20 20" aria-hidden="true"><path d="M5.5 5.5l9 9M14.5 5.5l-9 9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <span class="closed-only">Menu</span><span class="open-only">Close</span>
     </button>
-  </nav>
+    <nav class="menu-body" id="menu-body" aria-label="Sections">
+      <div class="menu-group">
+        <p class="label item" style="--i:0">The language</p>
+        <a class="item" style="--i:1" href="#principles">Principles</a>
+        <a class="item" style="--i:2" href="#themes">Themes</a>
+        <a class="item" style="--i:3" href="#type">Type</a>
+        <a class="item" style="--i:4" href="#components">Components</a>
+      </div>
+      <div class="menu-group">
+        <p class="label item" style="--i:1">In practice</p>
+        <a class="item" style="--i:2" href="#motion">Motion</a>
+        <a class="item" style="--i:3" href="#never">Never</a>
+        <a class="item" style="--i:4" href="#shipping">Shipping</a>
+      </div>
+      <div class="menu-foot item" style="--i:5">
+        <a href="taste.zip" download>Download the skill</a>
+        <a href="https://github.com/csamaha655-eng/claude-taste">GitHub</a>
+        <a href="#use">How to use</a>
+      </div>
+    </nav>
+  </div>
   <a class="btn btn-primary" href="#use">How to use</a>
 </header>
-<nav class="menu-panel glass" id="menu" aria-label="Sections" hidden>
-  <a href="#principles">Principles</a>
-  <a href="#themes">Themes</a>
-  <a href="#type">Type</a>
-  <a href="#components">Components</a>
-  <a href="#motion">Motion</a>
-  <a href="#never">Never</a>
-  <a href="#shipping">Shipping</a>
-</nav>
-
 <main>
   <!-- HERO -->
   <section class="hero" id="top">
@@ -545,7 +573,7 @@ code { font-family: var(--font-mono); font-size: .9em; }
       <div class="sec-head reveal">
         <p class="label">Themes</p>
         <h2 class="title two-tone"><span>Four looks.</span><span>Light unless you ask.</span></h2>
-        <p class="lede">Every website gets spacefs's design; every app gets the style-board phones in a light palette. Parallax and dark only when you ask. An existing app keeps its own look.</p>
+        <p class="lede">Product websites get spacefs's design; a clothing brand gets the black-and-white store; a restaurant or a portfolio gets the look its subject needs; every app gets the style-board phones in a light palette. Dark only when you ask. An existing app keeps its own look.</p>
       </div>
       <div class="themes">
         <article class="theme reveal">
@@ -556,8 +584,8 @@ code { font-family: var(--font-mono); font-size: .9em; }
           </div>
           <div class="theme-body">
             <h3>Quiet Glass</h3>
-            <p>Every website and web app, whatever the subject: spacefs.com, copied exactly. Only the accent, photos and words change.</p>
-            <ul class="sw"><li style="--c:#F7F8FA">F7F8FA</li><li style="--c:#0E0F12">0E0F12</li><li style="--c:#686D78">686D78</li><li style="--c:#0A84FF">0A84FF</li></ul>
+            <p>Every product website and web app: spacefs.com, about 90% copied, white glass. Only the accent, photos and words change.</p>
+            <ul class="sw"><li style="--c:#F7F8FA">F7F8FA</li><li style="--c:#0E0F12">0E0F12</li><li style="--c:#686D78">686D78</li><li style="--c:#1F4E79">1F4E79</li></ul>
           </div>
         </article>
 
@@ -610,6 +638,26 @@ code { font-family: var(--font-mono); font-size: .9em; }
           </div>
         </article>
 
+        <article class="theme theme-wide reveal">
+          <div class="tp tp-store" aria-hidden="true">
+            <div class="st-head"><svg viewBox="0 0 14 14"><path d="M1 4h12M1 10h12" stroke="#0B0B0B" stroke-width="1.2"/></svg><b>BRAND</b><svg viewBox="0 0 14 14"><path d="M2.5 4.5h9l-.8 8h-7.4z M5 4.5V3a2 2 0 0 1 4 0v1.5" stroke="#0B0B0B" stroke-width="1.2" fill="none"/></svg></div>
+            <div class="st-grid">
+              <div class="st-card"><div class="ph"><small>NEW</small><svg viewBox="0 0 28 28" aria-hidden="true"><path d="M9 3 13 1.5Q16 4 19 1.5L23 3 27 9 23 11V27H5V11L1 9Z" fill="#1C1C1C"/></svg></div><b>Heavy Tee</b><span>Black · $48</span></div>
+              <div class="st-card"><div class="ph"><svg viewBox="0 0 28 28" aria-hidden="true"><path d="M8.5 7Q8.5 1 14 1Q19.5 1 19.5 7L23 7.5 27.5 22 24 23 21.5 14V27H6.5V14L4 23 .5 22 5 7.5Z" fill="#2A2A2A"/><path d="M10.5 7.5Q14 12 17.5 7.5" stroke="#F4F4F4" stroke-width="1.2" fill="none"/><path d="M10 19.5H18V24H10Z" stroke="#4A4A4A" stroke-width="1" fill="none"/></svg></div><b>Hoodie</b><span>Washed black · $95</span></div>
+              <div class="st-card"><div class="ph"><svg viewBox="0 0 28 28" aria-hidden="true"><path d="M4 18Q4 6 14 6Q24 6 24 18Z" fill="#1C1C1C"/><path d="M14 18H27Q27 21 22 21H14Z" fill="#1C1C1C"/></svg></div><b>Cap</b><span>Black 1 more · $38</span></div>
+              <div class="st-card"><div class="ph"><svg viewBox="0 0 28 28" aria-hidden="true"><path d="M9 3 13 1.5Q16 4 19 1.5L23 3 28 22 24 23 21 12V27H7V12L4 23 0 22Z" fill="#3A3A3A"/></svg></div><b>Longsleeve</b><span>Ash · $62</span></div>
+              <div class="st-card"><div class="ph"><small>SOLD OUT</small><svg viewBox="0 0 28 28" aria-hidden="true"><path d="M5 4H23L26 25H16L14 14 12 25H2Z" fill="#1C1C1C"/></svg></div><b>Shorts</b><span>Black · $55</span></div>
+              <div class="st-card"><div class="ph"><svg viewBox="0 0 28 28" aria-hidden="true"><path d="M5 9H23L21 27H7Z" fill="#1C1C1C"/><path d="M10 9Q10 3 14 3Q18 3 18 9" stroke="#1C1C1C" stroke-width="1.6" fill="none"/></svg></div><b>Tote</b><span>Natural · $30</span></div>
+            </div>
+            <div class="st-club"><span>JOIN THE CLUB</span><span>JOIN →</span></div>
+          </div>
+          <div class="theme-body">
+            <h3>Clothing brand</h3>
+            <p>Every clothing or fashion store: black and white, blurred see-through glass, the photos carry the color. Quick-add cards, a black add-to-cart bar, drawers for the menu, search and cart. You give the name, logo, products and prices.</p>
+            <ul class="sw"><li style="--c:#FFFFFF">FFFFFF</li><li style="--c:#0B0B0B">0B0B0B</li><li style="--c:#F4F4F4">F4F4F4</li><li style="--c:#6F6F6F">6F6F6F</li></ul>
+          </div>
+        </article>
+
       </div>
     </div>
   </section>
@@ -631,7 +679,7 @@ code { font-family: var(--font-mono); font-size: .9em; }
           <p class="aa-note">On iOS: SF Pro, bold titles with tight tracking, monospaced digits that roll when they change.</p>
         </div>
         <ol class="card scale reveal">
-          <li><span class="mono">Display · 76 · 400</span><span class="t-display">Quiet glass.</span></li>
+          <li><span class="mono">Display · 76 · 500</span><span class="t-display">Quiet glass.</span></li>
           <li><span class="mono">Title · 60 · 500</span><span class="t-title">Built to feel expensive.</span></li>
           <li><span class="mono">Heading · 24 · 500</span><span class="t-heading">Rich, never busy</span></li>
           <li><span class="mono">Body · 17 · 400</span><span class="t-body">Every screen is full of real, useful content and nothing else.</span></li>
@@ -824,13 +872,12 @@ code { font-family: var(--font-mono); font-size: .9em; }
         <p class="muted">From a public launch post and about 85 replies: the rules every new app now follows.</p>
       </div>
       <ul class="rows">
-        <li class="reveal"><h3>Check the idea first</h3><p>Count the competitors, answer the free built-in alternative, name the one difference. Crowded ideas need a twist people see at a glance.</p></li>
-        <li class="reveal"><h3>Clear in two seconds</h3><p>The icon, the name and the first screenshot say what it does. The category word comes first.</p></li>
-        <li class="reveal"><h3>Four screens to the price</h3><p>Tap-only, one decision each, a demo of the result, then the paywall. Permissions after, each with a reason.</p></li>
+        <li class="reveal"><h3>Clear in two seconds</h3><p>The icon, the name and the first screenshot say what it does, before anyone reads the description.</p></li>
+        <li class="reveal"><h3>Four screens to the paywall</h3><p>Tap-only, one decision each, a demo of the result, then the paywall. Permissions after, each with a reason.</p></li>
         <li class="reveal"><h3>An honest paywall</h3><p>The billed price is the biggest. The trial is under it. Never "free" on the button.</p></li>
-        <li class="reveal"><h3>Prices with a reason</h3><p>A notch below the leaders while there are no ratings, on a ladder that adds up.</p></li>
+        <li class="reveal"><h3>Plain words</h3><p>Words a ten-year-old understands, saying who does what. No metaphor to decode, no mood line.</p></li>
         <li class="reveal"><h3>Light screenshots</h3><p>Big captions about the outcome, real moments, never a zero or a settings screen.</p></li>
-        <li class="reveal"><h3>Find the leak first</h3><p>Store page, onboarding, paywall, price, then traffic. No ads until it converts.</p></li>
+        <li class="reveal"><h3>Real photos, flat marks</h3><p>No rendered 3D, metal coins or colored glow. Licensed photos of the real moment, or flat marks drawn in code.</p></li>
       </ul>
     </div>
   </section>
@@ -846,7 +893,7 @@ code { font-family: var(--font-mono); font-size: .9em; }
         <ol class="steps">
           <li class="reveal"><span class="mono">01</span><div><h3>Check the idea</h3><p>A new app is researched first: the competitors, the free alternative, the one difference. A verdict before any code.</p></div></li>
           <li class="reveal"><span class="mono">02</span><div><h3>Read the project</h3><p>An existing app keeps its own look. Your newest words beat everything.</p></div></li>
-          <li class="reveal"><span class="mono">03</span><div><h3>Pick the look</h3><p>A website gets spacefs, exactly. An app gets the style-board phones in a light palette. Parallax and dark only when you ask.</p></div></li>
+          <li class="reveal"><span class="mono">03</span><div><h3>Pick the look</h3><p>A product site gets spacefs; other sites get the look their subject needs; an app gets the style-board phones in a light palette. Every site works on phones.</p></div></li>
           <li class="reveal"><span class="mono">04</span><div><h3>Build in phases</h3><p>Screen by screen, never one shot.</p></div></li>
           <li class="reveal"><span class="mono">05</span><div><h3>Look at every screen</h3><p>Every screen and sheet at full size, at phone width, mid-scroll, against the Never list. The full set before any submission.</p></div></li>
           <li class="reveal"><span class="mono">06</span><div><h3>Show it short</h3><p>Before and after, two or three lines, and what to test on your phone.</p></div></li>
@@ -854,7 +901,7 @@ code { font-family: var(--font-mono); font-size: .9em; }
         <div class="card use-card reveal">
           <p class="label">Installed at</p>
           <div class="path"><code id="skill-path">~/.claude/skills/taste</code><button class="btn btn-sm btn-glass" type="button" id="copy-btn">Copy</button></div>
-          <p>It loads by itself in every Claude Code terminal for any app idea, app, site or screen, and Codex reads it too. Type <code>/taste</code> to call it directly. It's backed up privately on GitHub. The public Download button at the bottom of this page always gets the latest version: unzip it and run <code>sh taste/install.sh</code>, or upload the zip on claude.ai.</p>
+          <p>It loads by itself in every Claude Code terminal for any app idea, app, site or screen, and Codex reads it too. Type <code>/taste</code> to call it directly. It's backed up on the private GitHub repo, linked at the bottom of this page. The Download button there gets the whole skill, the same files as GitHub: unzip it and run <code>sh taste/install.sh</code>.</p>
         </div>
       </div>
     </div>
@@ -870,9 +917,14 @@ code { font-family: var(--font-mono); font-size: .9em; }
           <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3v10M5.5 8.5 10 13l4.5-4.5M4 16.5h12"/></svg>
           Download the skill
         </a>
+        <a class="btn btn-glass" href="https://github.com/csamaha655-eng/claude-taste">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 13 13 7M8 7h5v5"/></svg>
+          GitHub
+        </a>
       </div>
     </div>
-    <p class="mono foot-note">Public download · taste.zip · the whole skill, always the latest version · works in Claude Code, Codex and on claude.ai</p>
+    <p class="mono foot-note">taste.zip is the whole skill, the same files as the private GitHub repo at <span class="rev">commit 492fc7c</span>: all three skills (design, app strategy, app marketing), the bought guides and the installer · unzip, then run <code>sh taste/install.sh</code> · always the latest version</p>
+    <p class="mono foot-note">On claude.ai, which takes one skill per upload: <a class="foot-link" href="app-strategy.zip" download>app-strategy.zip</a> · <a class="foot-link" href="app-marketing.zip" download>app-marketing.zip</a> · GitHub: <a class="foot-link" href="https://github.com/csamaha655-eng/claude-taste">csamaha655-eng/claude-taste</a> (private, sign in to open it)</p>
   </div>
   <div class="wordmark dot-matrix" aria-hidden="true">taste</div>
 </footer>
@@ -880,12 +932,23 @@ code { font-family: var(--font-mono); font-size: .9em; }
 <script src="stipple.js"></script>
 <script>
 (() => {
-  const menuBtn = document.querySelector('.menu-btn');
-  const panel = document.getElementById('menu');
-  const setMenu = (open) => { panel.hidden = !open; menuBtn.setAttribute('aria-expanded', String(open)); };
-  menuBtn.addEventListener('click', () => setMenu(panel.hidden));
-  panel.addEventListener('click', (e) => { if (e.target.closest('a')) setMenu(false); });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setMenu(false); });
+  // The Menu pill grows into the panel: its height comes from the content, laid out at the open width.
+  const menu = document.getElementById('menu');
+  const toggle = menu.querySelector('.menu-toggle');
+  const menuBody = document.getElementById('menu-body');
+  const isOpen = () => menu.hasAttribute('data-open');
+  const fit = () => menu.style.setProperty('--menu-h', (toggle.offsetHeight + menuBody.offsetHeight + 2) + 'px');
+  const setMenu = (open) => {
+    if (open) { fit(); menu.setAttribute('data-open', ''); } else menu.removeAttribute('data-open');
+    toggle.setAttribute('aria-expanded', String(open));
+    menuBody.inert = !open;
+  };
+  setMenu(false);
+  toggle.addEventListener('click', () => setMenu(!isOpen()));
+  menuBody.addEventListener('click', (e) => { if (e.target.closest('a')) setMenu(false); });
+  document.addEventListener('click', (e) => { if (isOpen() && !menu.contains(e.target)) setMenu(false); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && isOpen()) { setMenu(false); toggle.focus(); } });
+  addEventListener('resize', () => { if (isOpen()) fit(); });
 
   document.querySelectorAll('.segmented').forEach((seg) => {
     seg.addEventListener('click', (e) => {
