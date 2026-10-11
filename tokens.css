@@ -9,20 +9,20 @@
 
 :root {
   /* color */
-  --canvas: #F5F6F8;        /* page ground: cool off-white, never pure white */
+  --canvas: #F7F8FA;        /* page ground: spacefs.com, measured 2026-10-11; never pure white */
   --surface: #FFFFFF;       /* solid cards */
   --surface-2: #EEF0F3;     /* recessed wells, segmented tracks */
   --ink: #0E0F12;           /* headlines, primary text */
   --ink-2: #686D78;         /* second line of two-tone headlines, body copy */
   --ink-3: #8A8F99;         /* decoration only: icons, rings, disabled. Never readable text (3:1) */
-  --hairline: #E3E5EA;
+  --hairline: #E0E3E8;      /* spacefs border */
   --accent: #0A84FF;        /* focus, links, selection only */
   --primary: #0E0F12;       /* the pill CTA */
   --on-primary: #FFFFFF;
-  --glass-fill: rgb(255 255 255 / .64);
+  --glass-fill: rgb(255 255 255 / .66);   /* spacefs nav and chips */
   --glass-rim: rgb(0 0 0 / .08);
   --glass-highlight: rgb(255 255 255 / .95);
-  --shade: 0 0 0;           /* rgb triplet for shadows */
+  --shade: 15 23 42;        /* rgb triplet for shadows: spacefs uses slate, never pure black */
   --dot-a: #4D6B99;         /* stipple hue A (cool) */
   --dot-b: #C47A3A;         /* stipple hue B (warm) */
 
@@ -31,7 +31,7 @@
   --font-mono: "Google Sans Code", ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
   --w-regular: 400;
   --w-medium: 500;
-  --w-strong: 560;          /* display and titles: never skinny */
+  --w-strong: 500;          /* section titles and headings: spacefs weight; never lighter */
   --w-bold: 650;
 
   /* shape */
@@ -57,7 +57,7 @@
   /* layout */
   --max: 1200px;
   --gutter: clamp(16px, 4vw, 40px);
-  --section: clamp(72px, 9vw, 128px);
+  --section: clamp(64px, 6.35vw, 96px);   /* spacefs: 96px section padding */
 
   color-scheme: light;
 }
@@ -170,10 +170,13 @@ p { margin: 0; }
 /* --- Type --- */
 
 .display, .title, .heading { margin: 0; color: var(--ink); text-wrap: balance; }
-.display { font-size: clamp(44px, 7.2vw, 92px); line-height: 1; letter-spacing: -0.045em; font-weight: var(--w-strong); }
-.title { font-size: clamp(34px, 4.6vw, 60px); line-height: 1.04; letter-spacing: -0.04em; font-weight: var(--w-strong); }
-.heading { font-size: clamp(20px, 2vw, 26px); line-height: 1.25; letter-spacing: -0.02em; font-weight: var(--w-medium); }
-.lede { font-size: clamp(17px, 1.6vw, 20px); line-height: 1.55; letter-spacing: -0.01em; color: var(--ink-2); text-wrap: pretty; max-width: 36em; }
+/* spacefs.com type scale, measured 2026-10-11 at 1512px (hero 76, sections 60 and 54, rows 34, lede 17) */
+.display { font-size: clamp(44px, 5.03vw, 76px); line-height: 1.02; letter-spacing: -0.035em; font-weight: 400; }   /* spacefs hero: 400 at 76px, the one 400 heading */
+.title { font-size: clamp(36px, 3.97vw, 60px); line-height: 1.04; letter-spacing: -0.035em; font-weight: var(--w-strong); }
+.title-2 { margin: 0; color: var(--ink); text-wrap: balance; font-size: clamp(32px, 3.57vw, 54px); line-height: 1.04; letter-spacing: -0.03em; font-weight: var(--w-strong); }
+.heading { font-size: clamp(24px, 2.25vw, 34px); line-height: 1.25; letter-spacing: -0.025em; font-weight: var(--w-medium); }
+.lede { font-size: 17px; line-height: 1.625; letter-spacing: 0; color: var(--ink-2); text-wrap: pretty; max-width: 480px; }
+.meta { font-size: 12px; line-height: 16px; letter-spacing: .3px; color: color-mix(in srgb, var(--ink) 80%, transparent); }
 .muted { color: var(--ink-2); }
 .label { font-size: 12px; line-height: 1.2; font-weight: var(--w-medium); letter-spacing: .14em; text-transform: uppercase; color: var(--ink-2); }
 .mono { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0; }
@@ -196,27 +199,21 @@ p { margin: 0; }
   backdrop-filter: blur(24px) saturate(1.6);
   box-shadow: 0 0 0 .5px var(--glass-rim), 0 8px 24px -10px rgb(var(--shade) / .18), inset 0 .5px 0 var(--glass-highlight);
 }
-@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .glass, .btn-glass, .segmented { background: var(--surface); }
-}
-@media (prefers-reduced-transparency: reduce) {
-  .glass, .btn-glass, .segmented { background: var(--surface); -webkit-backdrop-filter: none; backdrop-filter: none; }
-}
 
 /* --- Buttons --- */
 
 .btn {
-  --h: 46px;
+  --h: 48px;                /* spacefs hero CTA: 48px, padding 0 28px */
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-  min-height: var(--h); padding: 0 22px;
+  min-height: var(--h); padding: 0 28px;
   border: 0; border-radius: var(--r-pill);
-  font: var(--w-medium) 15px/1 var(--font); letter-spacing: -0.005em;
+  font: var(--w-medium) 14px/20px var(--font); letter-spacing: 0;
   color: var(--ink); background: transparent;
   cursor: pointer; white-space: nowrap; -webkit-tap-highlight-color: transparent;
   transition: transform 90ms var(--ease-out), background-color var(--dur-1) var(--ease-std), opacity var(--dur-1) var(--ease-std);
 }
 .btn:active { transform: scale(.97); }
-.btn-primary { background: var(--primary); color: var(--on-primary); box-shadow: 0 1px 2px rgb(var(--shade) / .18), 0 8px 18px -8px rgb(var(--shade) / .45); }
+.btn-primary { background: var(--primary); color: var(--on-primary); box-shadow: inset 0 1px 0 rgb(255 255 255 / .16), 0 8px 20px -10px rgb(var(--shade) / .5); }   /* spacefs Download pill */
 .btn-primary:hover { background: color-mix(in srgb, var(--primary) 86%, var(--canvas)); }
 .btn-glass {
   background: var(--glass-fill);
@@ -227,18 +224,29 @@ p { margin: 0; }
 .btn-glass:hover { background: color-mix(in srgb, var(--glass-fill) 70%, var(--surface)); }
 .btn-outline { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 60%, transparent); }
 .btn-circle { --h: 44px; width: var(--h); padding: 0; background: var(--surface); box-shadow: var(--shadow-1); }
-.btn-sm { --h: 36px; padding: 0 16px; font-size: 14px; }
+.btn-sm { --h: 40px; padding: 0 16px; }   /* spacefs nav Download: 40px, padding 0 16px */
+.btn-xs { --h: 32px; padding: 0 12px; }   /* spacefs nav Menu pill */
 .btn svg { width: 18px; height: 18px; flex: none; }
 .arrow { transition: transform var(--dur-2) var(--ease-out); }
 a:hover .arrow, button:hover .arrow { transform: translateX(4px); }
 
 /* --- Small parts --- */
 
-.chip {
+.chip {                     /* spacefs chip: glass, 32px, 12px words */
   display: inline-flex; align-items: center; gap: 8px;
   min-height: 32px; padding: 0 14px; border-radius: var(--r-pill);
-  background: var(--surface); box-shadow: var(--shadow-1);
-  font-size: 13px; line-height: 1; color: var(--ink-2);
+  background: var(--glass-fill);
+  -webkit-backdrop-filter: blur(20px) saturate(1.5);
+  backdrop-filter: blur(20px) saturate(1.5);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / .9), 0 1px 2px rgb(var(--shade) / .05);
+  font-size: 12px; line-height: 16px; color: var(--ink-2);
+}
+.glass-card {               /* spacefs link card: glass, radius 24, padding 28 32 */
+  border-radius: 24px; padding: 28px 32px;
+  background: var(--glass-fill);
+  -webkit-backdrop-filter: blur(28px) saturate(1.6);
+  backdrop-filter: blur(28px) saturate(1.6);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / .95), 0 24px 60px -28px rgb(var(--shade) / .28), 0 0 0 .5px var(--glass-rim);
 }
 .segmented {
   display: inline-flex; gap: 2px; padding: 4px; border-radius: var(--r-pill);
@@ -248,9 +256,9 @@ a:hover .arrow, button:hover .arrow { transform: translateX(4px); }
   box-shadow: 0 0 0 .5px var(--glass-rim), 0 6px 18px -10px rgb(var(--shade) / .18);
 }
 .segmented button {
-  min-height: 38px; padding: 0 18px; border: 0; border-radius: var(--r-pill);
+  min-height: 36px; padding: 8px 16px; border: 0; border-radius: var(--r-pill);   /* spacefs: 36px */
   background: transparent; color: var(--ink-2); cursor: pointer;
-  font: var(--w-medium) 14px/1 var(--font);
+  font: var(--w-medium) 14px/20px var(--font);
   transition: background-color var(--dur-2) var(--ease-out), color var(--dur-1) var(--ease-std), box-shadow var(--dur-2) var(--ease-out);
 }
 .segmented button[aria-pressed="true"] { background: var(--surface); color: var(--ink); box-shadow: var(--shadow-1); }
@@ -289,4 +297,12 @@ a:hover .arrow, button:hover .arrow { transform: translateX(4px); }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}
+
+/* --- Fallbacks: last in the file so no component rule overrides them --- */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass, .btn-glass, .segmented, .nav-pill, .glass-card { background: var(--surface); }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .glass, .btn-glass, .segmented, .nav-pill, .glass-card { background: var(--surface); -webkit-backdrop-filter: none; backdrop-filter: none; }
 }

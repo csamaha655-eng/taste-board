@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
 <title>Taste Style Board</title>
-<meta name="theme-color" content="#F5F6F8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#F7F8FA" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0C0D10" media="(prefers-color-scheme: dark)">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -52,7 +52,7 @@ code { font-family: var(--font-mono); font-size: .9em; }
 /* ---------- nav ---------- */
 .nav { position: fixed; top: calc(env(safe-area-inset-top, 0px) + 14px); left: 0; right: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; padding-inline: var(--gutter); pointer-events: none; }
 .nav > * { pointer-events: auto; }
-.logo { width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; background: var(--surface); box-shadow: var(--shadow-2); color: var(--ink); }
+.logo { width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; background: var(--surface); box-shadow: var(--shadow-2); color: var(--ink); }
 .logo svg { width: 24px; height: 24px; }
 .nav-pill { position: absolute; left: 50%; transform: translateX(-50%); display: flex; gap: 2px; padding: 5px; border-radius: var(--r-pill); }
 .nav-pill a { padding: 10px 15px; border-radius: var(--r-pill); font-size: 14px; font-weight: 500; line-height: 1; color: var(--ink-2); transition: color var(--dur-1) var(--ease-std), background-color var(--dur-1) var(--ease-std); }
@@ -183,7 +183,7 @@ code { font-family: var(--font-mono); font-size: .9em; }
 .sw li::before { content: ""; width: 14px; height: 14px; border-radius: 50%; background: var(--c); box-shadow: 0 0 0 1px var(--hairline); }
 
 /* previews: each shows its own theme, so its colors are fixed in both page themes */
-.tp-quiet { background: #F5F6F8; --dot-a: #4D6B99; --dot-b: #C47A3A; }
+.tp-quiet { background: #F7F8FA; --dot-a: #4D6B99; --dot-b: #C47A3A; }
 .tp-quiet canvas { position: absolute; inset: 0; z-index: -1; }
 .mini-nav { position: absolute; top: 14px; left: 14px; right: 14px; display: flex; justify-content: space-between; align-items: center; }
 .mini-nav i { display: block; border-radius: 99px; }
@@ -234,8 +234,8 @@ code { font-family: var(--font-mono); font-size: .9em; }
 .scale li { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 20px; align-items: baseline; padding: 20px 0; border-top: 1px solid var(--hairline); }
 .scale li:first-child { border-top: 0; }
 .scale .mono { color: var(--ink-2); font-size: 12px; }
-.scale .t-display { font-size: clamp(40px, 5vw, 64px); line-height: 1; letter-spacing: -0.045em; font-weight: 560; }
-.scale .t-title { font-size: clamp(28px, 3.2vw, 40px); line-height: 1.05; letter-spacing: -0.04em; font-weight: 560; }
+.scale .t-display { font-size: clamp(40px, 5vw, 64px); line-height: 1.02; letter-spacing: -0.035em; font-weight: 400; }
+.scale .t-title { font-size: clamp(28px, 3.2vw, 40px); line-height: 1.04; letter-spacing: -0.035em; font-weight: 500; }
 .scale .t-heading { font-size: 24px; letter-spacing: -0.02em; font-weight: 500; }
 .scale .t-body { font-size: 17px; color: var(--ink-2); }
 .scale .t-skinny { font-family: system-ui, -apple-system, sans-serif; font-size: 26px; font-weight: 200; color: var(--ink-2); text-decoration: line-through; text-decoration-thickness: 1.5px; }
@@ -371,6 +371,7 @@ code { font-family: var(--font-mono); font-size: .9em; }
     <a href="#type">Type</a>
     <a href="#components">Components</a>
     <a href="#motion">Motion</a>
+    <a href="#shipping">Shipping</a>
     <button class="btn btn-sm menu-btn" type="button" aria-expanded="false" aria-controls="menu">
       <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 7h12M4 13h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
       Menu
@@ -385,6 +386,7 @@ code { font-family: var(--font-mono); font-size: .9em; }
   <a href="#components">Components</a>
   <a href="#motion">Motion</a>
   <a href="#never">Never</a>
+  <a href="#shipping">Shipping</a>
 </nav>
 
 <main>
@@ -392,9 +394,9 @@ code { font-family: var(--font-mono); font-size: .9em; }
   <section class="hero" id="top">
     <div class="hero-field" aria-hidden="true"><canvas class="stipple"></canvas></div>
     <div class="wrap hero-copy">
-      <p class="chip"><span class="chip-dot" aria-hidden="true"></span>Personal design language <span class="mono">v1</span></p>
+      <p class="chip"><span class="chip-dot" aria-hidden="true"></span>Personal design language <span class="mono">v2</span></p>
       <h1 class="display two-tone"><span>Quiet glass.</span><span>Built to feel expensive.</span></h1>
-      <p class="lede">The default look for every app and site you build: calm neutrals, real content, native Liquid Glass on iOS and solid color everywhere. Never a gradient.</p>
+      <p class="lede">The default look for every app and site you build: light, calm neutrals, real content and plain words, native Liquid Glass on iOS and solid color everywhere. Never a gradient.</p>
       <div class="hero-actions">
         <a class="btn btn-primary" href="#themes">See the themes</a>
         <a class="btn btn-glass" href="#principles">Read the rules</a>
@@ -520,8 +522,8 @@ code { font-family: var(--font-mono); font-size: .9em; }
     <div class="wrap split">
       <div class="split-head reveal">
         <p class="label">Principles</p>
-        <h2 class="title two-tone"><span>Six rules</span><span>behind every screen.</span></h2>
-        <p class="muted">Pulled from the references you sent and everything you've rejected before.</p>
+        <h2 class="title two-tone"><span>Nine rules</span><span>behind every screen.</span></h2>
+        <p class="muted">Pulled from the references you sent, everything you've rejected before, and what strangers said about a real launch.</p>
       </div>
       <ul class="rows">
         <li class="reveal"><h3>Rich, never busy</h3><p>Every screen is full of real, useful content. Nothing empty, nothing there just to decorate.</p></li>
@@ -530,6 +532,9 @@ code { font-family: var(--font-mono); font-size: .9em; }
         <li class="reveal"><h3>Glass is for navigation</h3><p>Bars, floating controls and sheets are glass. Content stays solid and easy to read.</p></li>
         <li class="reveal"><h3>Bold, never skinny</h3><p>One typeface per product. Headings at 500 to 700 with tight tracking.</p></li>
         <li class="reveal"><h3>Calm motion</h3><p>Short, physical easing. No splash animations, no confetti, no scroll-jacking.</p></li>
+        <li class="reveal"><h3>Light by default</h3><p>Strangers read dark screens lit by colored glow as AI-made. Dark only when you ask, and then flat.</p></li>
+        <li class="reveal"><h3>Plain words</h3><p>Say what it does so a child understands. Never a metaphor people have to decode.</p></li>
+        <li class="reveal"><h3>Real photos, flat marks</h3><p>Licensed or made-for-it photos, and marks drawn in code. No 3D renders, metal or glow.</p></li>
       </ul>
     </div>
   </section>
@@ -539,8 +544,8 @@ code { font-family: var(--font-mono); font-size: .9em; }
     <div class="wrap">
       <div class="sec-head reveal">
         <p class="label">Themes</p>
-        <h2 class="title two-tone"><span>Four looks.</span><span>Chosen by the subject.</span></h2>
-        <p class="lede">A travel app might earn parallax photography; a planner gets frosted sheets. An existing app always keeps its own look.</p>
+        <h2 class="title two-tone"><span>Four looks.</span><span>Light unless you ask.</span></h2>
+        <p class="lede">Every website gets spacefs's design; every app gets the style-board phones in a light palette. Parallax and dark only when you ask. An existing app keeps its own look.</p>
       </div>
       <div class="themes">
         <article class="theme reveal">
@@ -551,8 +556,8 @@ code { font-family: var(--font-mono); font-size: .9em; }
           </div>
           <div class="theme-body">
             <h3>Quiet Glass</h3>
-            <p>The default. Websites, SaaS, AI tools and every app's marketing site. From spacefs.com.</p>
-            <ul class="sw"><li style="--c:#F5F6F8">F5F6F8</li><li style="--c:#0E0F12">0E0F12</li><li style="--c:#686D78">686D78</li><li style="--c:#0A84FF">0A84FF</li></ul>
+            <p>Every website and web app, whatever the subject: spacefs.com, copied exactly. Only the accent, photos and words change.</p>
+            <ul class="sw"><li style="--c:#F7F8FA">F7F8FA</li><li style="--c:#0E0F12">0E0F12</li><li style="--c:#686D78">686D78</li><li style="--c:#0A84FF">0A84FF</li></ul>
           </div>
         </article>
 
@@ -565,7 +570,7 @@ code { font-family: var(--font-mono); font-size: .9em; }
           </div>
           <div class="theme-body">
             <h3>Atmos Glass</h3>
-            <p>The design of every iOS app, in any palette. On the web: planners, AI and health.</p>
+            <p>The design of every iOS app, in a light palette picked by the subject.</p>
             <ul class="sw"><li style="--c:#EEF0F3">EEF0F3</li><li style="--c:#6F95B2">6F95B2</li><li style="--c:#111214">111214</li><li style="--c:#0A0A0B">0A0A0B</li></ul>
           </div>
         </article>
@@ -583,7 +588,7 @@ code { font-family: var(--font-mono); font-size: .9em; }
           </div>
           <div class="theme-body">
             <h3>Parallax Journey</h3>
-            <p>Travel, food, places and events. Photography carries the color; layers move at different speeds.</p>
+            <p>When you ask for parallax or a photo-led page. Photography carries the color; layers move at different speeds.</p>
             <ul class="sw"><li style="--c:#DDE4EB">DDE4EB</li><li style="--c:#93A5B6">93A5B6</li><li style="--c:#34414E">34414E</li><li style="--c:#FFFFFF">Glass</li></ul>
           </div>
         </article>
@@ -600,7 +605,7 @@ code { font-family: var(--font-mono); font-size: .9em; }
           </div>
           <div class="theme-body">
             <h3>Nocturne</h3>
-            <p>Screen time, sleep, focus and finance, only when dark fits. Flat chrome, one accent, real landscapes.</p>
+            <p>Only when you ask for dark, or the product is truly night-time. Flat chrome, one accent, real photography, never a glow.</p>
             <ul class="sw"><li style="--c:#0A0A0A">0A0A0A</li><li style="--c:#F2F2F0">F2F2F0</li><li style="--c:#9B9BA1">9B9BA1</li><li style="--c:#7AA2FF">Brand</li></ul>
           </div>
         </article>
@@ -626,8 +631,8 @@ code { font-family: var(--font-mono); font-size: .9em; }
           <p class="aa-note">On iOS: SF Pro, bold titles with tight tracking, monospaced digits that roll when they change.</p>
         </div>
         <ol class="card scale reveal">
-          <li><span class="mono">Display · 92 · 560</span><span class="t-display">Quiet glass.</span></li>
-          <li><span class="mono">Title · 60 · 560</span><span class="t-title">Built to feel expensive.</span></li>
+          <li><span class="mono">Display · 76 · 400</span><span class="t-display">Quiet glass.</span></li>
+          <li><span class="mono">Title · 60 · 500</span><span class="t-title">Built to feel expensive.</span></li>
           <li><span class="mono">Heading · 24 · 500</span><span class="t-heading">Rich, never busy</span></li>
           <li><span class="mono">Body · 17 · 400</span><span class="t-body">Every screen is full of real, useful content and nothing else.</span></li>
           <li><span class="mono">Label · 12 · 500</span><span class="label">This week</span></li>
@@ -669,16 +674,16 @@ code { font-family: var(--font-mono); font-size: .9em; }
               <button type="button" aria-pressed="true" data-plan="annual">Annual</button>
             </div>
             <div data-show="annual">
-              <div class="price-top"><b>Annual</b><span class="badge-save">Save 67%</span></div>
-              <div class="price-amount"><strong>$39.99</strong><span>/ year</span><s>$119.88</s></div>
-              <small>7-day free trial, then $3.33 a month.</small>
+              <div class="price-top"><b>Annual</b><span class="badge-save">Save 58%</span></div>
+              <div class="price-amount"><strong>$29.99</strong><span>/ year</span></div>
+              <small>After 7 days free. Then $29.99 billed yearly until you cancel.</small>
             </div>
             <div data-show="monthly" hidden>
               <div class="price-top"><b>Monthly</b></div>
-              <div class="price-amount"><strong>$9.99</strong><span>/ month</span></div>
-              <small>Cancel anytime. Lifetime is $129.99 once.</small>
+              <div class="price-amount"><strong>$5.99</strong><span>/ month</span></div>
+              <small>Cancel any time. Lifetime is $79.99 once.</small>
             </div>
-            <a class="btn btn-primary" href="#use">Start free trial</a>
+            <a class="btn btn-primary" href="#use">Start Pro</a>
           </div>
         </div>
 
@@ -785,7 +790,7 @@ code { font-family: var(--font-mono); font-size: .9em; }
       <div class="split-head reveal">
         <p class="label">Never</p>
         <h2 class="title two-tone"><span>What makes it</span><span>look made by AI.</span></h2>
-        <p class="muted">Every item here is something you rejected in a past project.</p>
+        <p class="muted">Everything you rejected in a past project, and what strangers called AI-made.</p>
       </div>
       <ul class="never">
         <li><i><svg viewBox="0 0 10 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 2l6 6M8 2 2 8"/></svg></i>Gradient colors</li>
@@ -802,6 +807,30 @@ code { font-family: var(--font-mono); font-size: .9em; }
         <li><i><svg viewBox="0 0 10 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 2l6 6M8 2 2 8"/></svg></i>Icon-in-a-circle rows</li>
         <li><i><svg viewBox="0 0 10 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 2l6 6M8 2 2 8"/></svg></i>Fake stats and reviews</li>
         <li><i><svg viewBox="0 0 10 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 2l6 6M8 2 2 8"/></svg></i>Copying a reference word for word</li>
+        <li><i><svg viewBox="0 0 10 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 2l6 6M8 2 2 8"/></svg></i>Dark screens with colored glow</li>
+        <li><i><svg viewBox="0 0 10 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 2l6 6M8 2 2 8"/></svg></i>3D renders, metal coins and medals</li>
+        <li><i><svg viewBox="0 0 10 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 2l6 6M8 2 2 8"/></svg></i>Metaphors people have to decode</li>
+        <li><i><svg viewBox="0 0 10 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 2l6 6M8 2 2 8"/></svg></i>Zero states in screenshots</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- SHIPPING -->
+  <section class="section" id="shipping">
+    <div class="wrap split">
+      <div class="split-head reveal">
+        <p class="label">Shipping</p>
+        <h2 class="title two-tone"><span>What real users</span><span>taught the apps.</span></h2>
+        <p class="muted">From a public launch post and about 85 replies: the rules every new app now follows.</p>
+      </div>
+      <ul class="rows">
+        <li class="reveal"><h3>Check the idea first</h3><p>Count the competitors, answer the free built-in alternative, name the one difference. Crowded ideas need a twist people see at a glance.</p></li>
+        <li class="reveal"><h3>Clear in two seconds</h3><p>The icon, the name and the first screenshot say what it does. The category word comes first.</p></li>
+        <li class="reveal"><h3>Four screens to the price</h3><p>Tap-only, one decision each, a demo of the result, then the paywall. Permissions after, each with a reason.</p></li>
+        <li class="reveal"><h3>An honest paywall</h3><p>The billed price is the biggest. The trial is under it. Never "free" on the button.</p></li>
+        <li class="reveal"><h3>Prices with a reason</h3><p>A notch below the leaders while there are no ratings, on a ladder that adds up.</p></li>
+        <li class="reveal"><h3>Light screenshots</h3><p>Big captions about the outcome, real moments, never a zero or a settings screen.</p></li>
+        <li class="reveal"><h3>Find the leak first</h3><p>Store page, onboarding, paywall, price, then traffic. No ads until it converts.</p></li>
       </ul>
     </div>
   </section>
@@ -815,16 +844,17 @@ code { font-family: var(--font-mono); font-size: .9em; }
       </div>
       <div>
         <ol class="steps">
-          <li class="reveal"><span class="mono">01</span><div><h3>Read the project</h3><p>An existing app keeps its own look. Your newest words beat everything.</p></div></li>
-          <li class="reveal"><span class="mono">02</span><div><h3>Pick a theme for the subject</h3><p>Travel gets parallax, a planner gets frosted sheets, a website gets Quiet Glass.</p></div></li>
-          <li class="reveal"><span class="mono">03</span><div><h3>Build in phases</h3><p>Screen by screen, never one shot.</p></div></li>
-          <li class="reveal"><span class="mono">04</span><div><h3>Screenshot and check</h3><p>Full size, light and dark, phone width, mid-scroll, against the Never list.</p></div></li>
-          <li class="reveal"><span class="mono">05</span><div><h3>Show it short</h3><p>Before and after, two or three lines, and what to test on your phone.</p></div></li>
+          <li class="reveal"><span class="mono">01</span><div><h3>Check the idea</h3><p>A new app is researched first: the competitors, the free alternative, the one difference. A verdict before any code.</p></div></li>
+          <li class="reveal"><span class="mono">02</span><div><h3>Read the project</h3><p>An existing app keeps its own look. Your newest words beat everything.</p></div></li>
+          <li class="reveal"><span class="mono">03</span><div><h3>Pick the look</h3><p>A website gets spacefs, exactly. An app gets the style-board phones in a light palette. Parallax and dark only when you ask.</p></div></li>
+          <li class="reveal"><span class="mono">04</span><div><h3>Build in phases</h3><p>Screen by screen, never one shot.</p></div></li>
+          <li class="reveal"><span class="mono">05</span><div><h3>Look at every screen</h3><p>Every screen and sheet at full size, at phone width, mid-scroll, against the Never list. The full set before any submission.</p></div></li>
+          <li class="reveal"><span class="mono">06</span><div><h3>Show it short</h3><p>Before and after, two or three lines, and what to test on your phone.</p></div></li>
         </ol>
         <div class="card use-card reveal">
           <p class="label">Installed at</p>
           <div class="path"><code id="skill-path">~/.claude/skills/taste</code><button class="btn btn-sm btn-glass" type="button" id="copy-btn">Copy</button></div>
-          <p>It loads by itself for any app, site or screen. Type <code>/taste</code> to call it directly. It's backed up privately on GitHub, and the Download button at the bottom of this page always gets the latest version.</p>
+          <p>It loads by itself in every Claude Code terminal for any app idea, app, site or screen, and Codex reads it too. Type <code>/taste</code> to call it directly. It's backed up privately on GitHub, and the Download button at the bottom of this page always gets the latest version.</p>
         </div>
       </div>
     </div>
